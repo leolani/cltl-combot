@@ -4,7 +4,7 @@ This repo has been created for human-robot interaction with conversation.
 
 ## About the Project
 
-At [CLTL](http://www.cltl.nl/) we have an existing [Leolani platform](https://github.com/cltl-leolani/pepper), which we still develop and maintain to this date. However it has the following limitations:
+At [CLTL](http://www.cltl.nl/) we have an existing [Leolani platform](https://github.com/leolani/pepper), which we still develop and maintain to this date. However it has the following limitations:
 
 * It's based on a physical robot, which is are hard to prototpye.
 * It uses the Softbank SDK python2 library (it's the only option to be compatible with Softbank)
