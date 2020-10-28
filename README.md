@@ -13,7 +13,7 @@ At [CLTL](http://www.cltl.nl/) we have an existing [Leolani platform](https://gi
 This repo will overcome the limitations and foster the communications between humans and robots.
 
 ## Work in Progress
-Refer to [`overall_architecture.md`](https://github.com/cltl-leolani/cltl-combot/blob/main/overall_architecture.md).
+Refer to [`overall_architecture.md`](https://github.com/leolani/cltl-combot/blob/main/overall_architecture.md).
 
 
 <!-- ## Getting Started
@@ -53,7 +53,7 @@ Contributions are what make the open source community such an amazing place to b
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See [`LICENSE`](https://github.com/cltl-leolani/cltl-combot/blob/main/LICENSE) for more information.
+Distributed under the MIT License. See [`LICENSE`](https://github.com/leolani/cltl-combot/blob/main/LICENCE) for more information.
 
 
 
