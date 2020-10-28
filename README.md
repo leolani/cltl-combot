@@ -1,6 +1,6 @@
-# Virtual Leolani
+# Leolani
 
-This repo has been created for human-robot interaction with coversation.
+This repo has been created for human-robot interaction with conversation.
 
 ## About the Project
 
