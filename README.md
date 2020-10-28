@@ -13,7 +13,7 @@ At [CLTL](http://www.cltl.nl/) we have an existing [Leolani platform](https://gi
 This repo will overcome the limitations and foster the communications between humans and robots.
 
 ## Work in Progress
-Refer to [`overall_architecture.md`](https://github.com/cltl-leolani/virtual-leolani/blob/main/overall_architecture.md).
+Refer to [`overall_architecture.md`](https://github.com/cltl-leolani/cltl-combot/blob/main/overall_architecture.md).
 
 
 <!-- ## Getting Started
