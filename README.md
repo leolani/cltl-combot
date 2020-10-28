@@ -61,3 +61,5 @@ Distributed under the MIT License. See [`LICENSE`](https://github.com/cltl-leola
 ## Authors
 
 * [Taewoon Kim](https://tae898.github.io/)
+* [Thomas Baier](https://www.linkedin.com/in/thomas-baier-05519030/)
+* [Selene Báez Santamaría](https://selbaez.github.io/)
