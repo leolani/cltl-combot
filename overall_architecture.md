@@ -122,7 +122,7 @@ Webcam and microphone recording, speaker output, and Leolani face rendering will
 
 
 
-# Actual repo created
+# Actual repos created
 
 1. cltl-template
     * A template for other repos.  
