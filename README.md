@@ -1,6 +1,7 @@
 # Leolani
 
 This repo has been created for human-robot interaction with conversation.
+This is the main framework repo.
 
 ## About the Project
 
