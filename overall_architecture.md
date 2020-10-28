@@ -119,3 +119,23 @@ Webcam and microphone recording, speaker output, and Leolani face rendering will
 > TODO:
 > 
 > Get Webcam, microphone, and speaker to work in python3\. Find a way to make them run in separate threads so that we can process them somewhat simultaneously.
+
+
+
+# Actual repo names created
+
+1. cltl-template
+2. cltl-combot
+3. cltl-vad
+4. cltl-stt
+5. cltl-objectdetection
+6. cltl-facedetection
+7. cltl-facerecognition
+8. cltl-facelandmark
+9. cltl-agedetection
+10. cltl-genderdetection
+11. cltl-emotionrecognition 
+12. cltl-sentimentrecognition positive/negative
+13. cltl-knowledgeextraction
+14. cltl-knowledgerepresentation
+15. cltl-tts
