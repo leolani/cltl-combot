@@ -129,6 +129,8 @@ Webcam and microphone recording, speaker output, and Leolani face rendering will
 4. cltl-vad
 5. cltl-stt
 
+---
+
 6. cltl-objectdetection (WIP)
 7. cltl-facedetection
 8. cltl-facerecognition
@@ -139,6 +141,8 @@ Webcam and microphone recording, speaker output, and Leolani face rendering will
 13. cltl-emotionrecognition     
 14. cltl-sentimentrecognition   
   
+---
+
 15. cltl-knowledgeextraction
 16. cltl-knowledgerepresentation (WIP)
 17. cltl-commonsense
