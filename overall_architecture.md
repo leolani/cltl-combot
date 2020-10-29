@@ -124,31 +124,23 @@ Webcam and microphone recording, speaker output, and Leolani face rendering will
 
 # Actual repos created
 
-1. cltl-template
-    * A template for other repos.  
-2. cltl-combot
-    * The framework.
-3. cltl-vad
-    * Voice activity detection.
-4. cltl-stt
-    * speech to text
-5. cltl-objectdetection
-    * bouding boxes + classes
-6. cltl-facedetection
-    * bounding box around the face
-7. cltl-facerecognition
-    * embedding vectors from faces
-8. cltl-facelandmark
-    * facial landmarks from a cropped face
-9. cltl-agedetection
-    * age detection from a cropped face
-10. cltl-genderdetection
-    * gender detection from a cropped face
-11. cltl-emotionrecognition 
-    * emotion recognition from multi-modal data
-12. cltl-sentimentrecognition positive/negative
-    * sentiment recognition from multi-modal data
-13. cltl-knowledgeextraction
-14. cltl-knowledgerepresentation
-15. cltl-tts
-    * text to speech
+cltl-template
+cltl-docker
+cltl-combot (WIP)
+cltl-vad
+cltl-stt
+
+cltl-objectdetection (WIP)
+cltl-facedetection
+cltl-facerecognition
+cltl-facelandmark
+cltl-agedetection
+cltl-genderdetection
+cltl-facegeneration
+cltl-emotionrecognition     
+cltl-sentimentrecognition   
+  
+cltl-knowledgeextraction
+cltl-knowledgerepresentation (WIP)
+cltl-commonsense
+cltl-tts
