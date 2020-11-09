@@ -5,8 +5,8 @@ import threading
 import time
 import unittest
 
-from leolani.framework.infra.resource.api import Lock, acquire
-from leolani.framework.infra.resource.threaded import ThreadedResourceManager
+from cltl.combot.infra.resource.api import Lock, acquire
+from cltl.combot.infra.resource.threaded import ThreadedResourceManager
 
 
 logger = logging.getLogger(__name__)

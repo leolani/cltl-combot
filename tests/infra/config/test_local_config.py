@@ -4,7 +4,7 @@ import unittest
 import importlib_resources
 from enum import Enum
 
-from leolani.framework.infra.config.local import LocalConfigurationContainer
+from cltl.combot.infra.config.local import LocalConfigurationContainer
 
 
 class TestEnum(Enum):

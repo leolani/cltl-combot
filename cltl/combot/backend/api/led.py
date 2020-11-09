@@ -3,13 +3,13 @@ import logging
 from enum import Enum
 from typing import List, Tuple
 
-from leolani.framework.infra.event.api import EventBus
-from leolani.framework.infra.resource.api import ResourceManager
+from cltl.combot.infra.event.api import EventBus
+from cltl.combot.infra.resource.api import ResourceManager
 
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "leolani.framework.backend.api.led.topic"
+TOPIC = "cltl.combot.backend.api.led.topic"
 
 
 class Led(Enum):

@@ -7,8 +7,8 @@ from time import sleep
 from enum import Enum
 from typing import Iterable, Optional, Union
 
-from leolani.framework.infra.event.api import EventBus, Event, TopicError
-from leolani.framework.infra.resource.api import ResourceManager, LockTimeoutError
+from cltl.combot.infra.event.api import EventBus, Event, TopicError
+from cltl.combot.infra.resource.api import ResourceManager, LockTimeoutError
 
 logger = logging.getLogger(__name__)
 

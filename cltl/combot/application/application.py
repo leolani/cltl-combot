@@ -2,8 +2,8 @@ import logging
 from threading import Thread
 from time import sleep
 
-from leolani.framework.application.intention import AbstractIntention
-from leolani.framework.backend.container import BackendContainer
+from cltl.combot.application.intention import AbstractIntention
+from cltl.combot.backend.container import BackendContainer
 
 logger = logging.getLogger(__name__)
 

@@ -2,13 +2,13 @@ import logging
 
 from typing import Union
 
-from leolani.framework.infra.event.api import EventBus
-from leolani.framework.infra.resource.api import ResourceManager
+from cltl.combot.infra.event.api import EventBus
+from cltl.combot.infra.resource.api import ResourceManager
 
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "leolani.framework.backend.api.tablet.topic"
+TOPIC = "cltl.combot.backend.api.tablet.topic"
 
 
 class AbstractTablet(object):

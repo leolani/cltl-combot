@@ -1,8 +1,8 @@
 import logging
 from threading import RLock
 
-from leolani.framework.infra.di_container import singleton
-from leolani.framework.infra.event.api import EventBusContainer, EventBus
+from cltl.combot.infra.di_container import singleton
+from cltl.combot.infra.event.api import EventBusContainer, EventBus
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ class SynchronousEventBus(EventBus):
         self._handlers = {}
         self._topic_lock = RLock()
 
-    def publish(self, topic, event, async=False, timeout=-1):
+    def publish(self, topic, event):
         for handler in self.__get_handlers(topic):
             handler(event.with_topic(topic))
 

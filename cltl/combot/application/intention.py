@@ -1,10 +1,10 @@
 import logging
 
-from leolani.framework.application.component import AbstractComponent
-from leolani.framework.backend.api.led import AbstractLed
-from leolani.framework.backend.api.motion import AbstractMotion
-from leolani.framework.backend.api.tablet import AbstractTablet
-from leolani.framework.backend.container import BackendContainer
+from cltl.combot.application.component import AbstractComponent
+from cltl.combot.backend.api.led import AbstractLed
+from cltl.combot.backend.api.motion import AbstractMotion
+from cltl.combot.backend.api.tablet import AbstractTablet
+from cltl.combot.backend.container import BackendContainer
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +59,7 @@ class AbstractIntention(AbstractComponent, BackendContainer):
     def motion(self):
         # type: () -> AbstractMotion
         """
-        Returns :class:`~leolani.framework.backend.api.motion.AbstractMotion` associated with current Backend
+        Returns :class:`~cltl.combot.backend.api.motion.AbstractMotion` associated with current Backend
 
         Returns
         -------
@@ -71,7 +71,7 @@ class AbstractIntention(AbstractComponent, BackendContainer):
     def led(self):
         # type: () -> AbstractLed
         """
-        Returns :class:`~leolani.framework.backend.api.led.AbstractLed` associated with current Backend
+        Returns :class:`~cltl.combot.backend.api.led.AbstractLed` associated with current Backend
 
         Returns
         -------
@@ -83,7 +83,7 @@ class AbstractIntention(AbstractComponent, BackendContainer):
     def tablet(self):
         # type: () -> AbstractTablet
         """
-        Returns :class:`~leolani.framework.backend.api.tablet.AbstractTablet` associated with current Backend
+        Returns :class:`~cltl.combot.backend.api.tablet.AbstractTablet` associated with current Backend
 
         Returns
         -------

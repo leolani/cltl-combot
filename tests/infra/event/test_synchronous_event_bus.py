@@ -1,7 +1,7 @@
 import unittest
 
-from leolani.framework.infra.event.api import Event, EventMetadata
-from leolani.framework.infra.event.memory import SynchronousEventBus
+from cltl.combot.infra.event.api import Event, EventMetadata
+from cltl.combot.infra.event.memory import SynchronousEventBus
 
 
 class SynchronousEventBusTestCase(unittest.TestCase):

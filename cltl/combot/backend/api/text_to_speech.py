@@ -4,15 +4,15 @@ from time import sleep
 
 from typing import Optional, Union
 
-from leolani.framework.backend.api.microphone import AUDIO_RESOURCE_NAME as AUDIO_RESOURCE
-from leolani.framework.infra.event.api import EventBus, Event
-from leolani.framework.infra.resource.api import ResourceManager
-from leolani.framework.infra.util import Scheduler
+from cltl.combot.backend.api.microphone import AUDIO_RESOURCE_NAME as AUDIO_RESOURCE
+from cltl.combot.infra.event.api import EventBus, Event
+from cltl.combot.infra.resource.api import ResourceManager
+from cltl.combot.infra.util import Scheduler
 
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "leolani.framework.backend.api.text_to_speech.topic"
+TOPIC = "cltl.combot.backend.api.text_to_speech.topic"
 
 
 class AbstractTextToSpeech(object):

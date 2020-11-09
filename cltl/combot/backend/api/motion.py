@@ -2,14 +2,14 @@ import logging
 
 from typing import Tuple
 
-from leolani.framework.infra.event.api import EventBus
-from leolani.framework.infra.resource.api import ResourceManager
+from cltl.combot.infra.event.api import EventBus
+from cltl.combot.infra.resource.api import ResourceManager
 
 logger = logging.getLogger(__name__)
 
 
-TOPIC_POINT = "leolani.framework.backend.api.motion.point"
-TOPIC_LOOK = "leolani.framework.backend.api.motion.look"
+TOPIC_POINT = "cltl.combot.backend.api.motion.point"
+TOPIC_LOOK = "cltl.combot.backend.api.motion.look"
 
 
 class AbstractMotion(object):

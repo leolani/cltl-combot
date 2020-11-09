@@ -5,19 +5,19 @@ from time import time, sleep
 
 import numpy as np
 
-from leolani.framework.infra.event.api import Event, EventBus
-from leolani.framework.infra.resource.api import ResourceManager
-from leolani.framework.infra.util import Scheduler
+from cltl.combot.infra.event.api import Event, EventBus
+from cltl.combot.infra.resource.api import ResourceManager
+from cltl.combot.infra.util import Scheduler
 
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "leolani.framework.backend.api.microphone.topic"
-AUDIO_RESOURCE_NAME = "leolani.framework.backend.api.audio"
+TOPIC = "cltl.combot.backend.api.microphone.topic"
+AUDIO_RESOURCE_NAME = "cltl.combot.backend.api.audio"
 """Resource name to be shared with the speaker to mute the microphone when the speaker is active.
 The AbstractMicrophone holds a reader-lock on this resource.
 """
-MIC_RESOURCE_NAME = "leolani.framework.backend.api.microphone"
+MIC_RESOURCE_NAME = "cltl.combot.backend.api.microphone"
 """Resource name to be shared with application components that allows to retract microphone access from those components.
 The AbstractMicrophone holds a writer-lock on this resource.
 """

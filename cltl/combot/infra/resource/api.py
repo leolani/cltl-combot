@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 from typing import Iterable
 
-from leolani.framework.infra.di_container import DIContainer
+from cltl.combot.infra.di_container import DIContainer
 
 
 class LockTimeoutError(Exception):
@@ -14,7 +14,7 @@ class LockTimeoutError(Exception):
 
 class ResourceContainer(DIContainer):
     """
-    :class:`~leolani.framework.infra.di_container.DIContainer` providing a :class:`.ResourceManager` instance.
+    :class:`~cltl.combot.infra.di_container.DIContainer` providing a :class:`.ResourceManager` instance.
     """
     @property
     def resource_manager(self):

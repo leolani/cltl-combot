@@ -4,7 +4,7 @@ import time
 from collections import defaultdict
 from contextlib import contextmanager
 
-from leolani.framework.infra.di_container import singleton
+from cltl.combot.infra.di_container import singleton
 from .api import ReadLock, WriteLock, ResourceManager, ResourceContainer, LockTimeoutError
 
 logger = logging.getLogger(__name__)

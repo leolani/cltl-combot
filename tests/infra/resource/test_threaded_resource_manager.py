@@ -2,8 +2,8 @@ import threading
 import time
 import unittest
 
-from leolani.framework.infra.resource.api import Lock, ReadLock, WriteLock
-from leolani.framework.infra.resource.threaded import ThreadedResourceManager
+from cltl.combot.infra.resource.api import Lock, ReadLock, WriteLock
+from cltl.combot.infra.resource.threaded import ThreadedResourceManager
 
 TIMEOUT=1
 

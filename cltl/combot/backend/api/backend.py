@@ -1,11 +1,11 @@
 import logging
 
-from leolani.framework.backend.api.camera import AbstractCamera
-from leolani.framework.backend.api.led import AbstractLed
-from leolani.framework.backend.api.microphone import AbstractMicrophone
-from leolani.framework.backend.api.motion import AbstractMotion
-from leolani.framework.backend.api.tablet import AbstractTablet
-from leolani.framework.backend.api.text_to_speech import AbstractTextToSpeech
+from cltl.combot.backend.api.camera import AbstractCamera
+from cltl.combot.backend.api.led import AbstractLed
+from cltl.combot.backend.api.microphone import AbstractMicrophone
+from cltl.combot.backend.api.motion import AbstractMotion
+from cltl.combot.backend.api.tablet import AbstractTablet
+from cltl.combot.backend.api.text_to_speech import AbstractTextToSpeech
 
 
 logger = logging.getLogger(__name__)
@@ -16,24 +16,24 @@ class AbstractBackend(object):
     Abstract Backend on which all Backends are based
 
     Exposes
-    :class:`~leolani.framework.backend.api.camera.AbstractCamera`,
-    :class:`~leolani.framework.backend.api.microphone.AbstractMicrophone`,
-    :class:`~leolani.framework.backend.api.text_to_speech.AbstractTextToSpeech`,
-    :class:`~leolani.framework.backend.api.led.AbstractLed` and
-    :class:`~leolani.framework.backend.api.tablet.AbstractTablet`.
+    :class:`~cltl.combot.backend.api.camera.AbstractCamera`,
+    :class:`~cltl.combot.backend.api.microphone.AbstractMicrophone`,
+    :class:`~cltl.combot.backend.api.text_to_speech.AbstractTextToSpeech`,
+    :class:`~cltl.combot.backend.api.led.AbstractLed` and
+    :class:`~cltl.combot.backend.api.tablet.AbstractTablet`.
 
     Parameters
     ----------
     camera: AbstractCamera
-        Backend :class:`~leolani.framework.backend.api.camera.AbstractCamera`
+        Backend :class:`~cltl.combot.backend.api.camera.AbstractCamera`
     microphone: AbstractMicrophone
-        Backend :class:`~leolani.framework.backend.api.microphone.AbstractMicrophone`
+        Backend :class:`~cltl.combot.backend.api.microphone.AbstractMicrophone`
     text_to_speech: AbstractTextToSpeech
-        Backend :class:`~leolani.framework.backend.api.text_to_speech.AbstractTextToSpeech`
+        Backend :class:`~cltl.combot.backend.api.text_to_speech.AbstractTextToSpeech`
     led: AbstractLed
-        Backend :class:`~leolani.framework.backend.api.led.AbstractLed`
+        Backend :class:`~cltl.combot.backend.api.led.AbstractLed`
     tablet: AbstractTablet
-        Backend :class:`~leolani.framework.backend.api.tablet.AbstractTablet`
+        Backend :class:`~cltl.combot.backend.api.tablet.AbstractTablet`
     """
 
     def __init__(self, camera, microphone, text_to_speech, motion, led, tablet):
@@ -69,7 +69,7 @@ class AbstractBackend(object):
     def camera(self):
         # type: () -> AbstractCamera
         """
-        Reference to :class:`~leolani.framework.backdend.api.camera.AbstractCamera`
+        Reference to :class:`~cltl.combot.backdend.api.camera.AbstractCamera`
 
         Returns
         -------
@@ -81,7 +81,7 @@ class AbstractBackend(object):
     def microphone(self):
         # type: () -> AbstractMicrophone
         """
-        Reference to :class:`~leolani.framework.backend.api.microphone.AbstractMicrophone`
+        Reference to :class:`~cltl.combot.backend.api.microphone.AbstractMicrophone`
 
         Returns
         -------
@@ -93,7 +93,7 @@ class AbstractBackend(object):
     def text_to_speech(self):
         # type: () -> AbstractTextToSpeech
         """
-        Reference to :class:`~leolani.framework.backend.api.text_to_speech.AbstractTextToSpeech`
+        Reference to :class:`~cltl.combot.backend.api.text_to_speech.AbstractTextToSpeech`
 
         Returns
         -------
@@ -105,7 +105,7 @@ class AbstractBackend(object):
     def motion(self):
         # type: () -> AbstractMotion
         """
-        Reference to :class:`~leolani.framework.backend.api.motion.AbstractMotion`
+        Reference to :class:`~cltl.combot.backend.api.motion.AbstractMotion`
 
         Returns
         -------
@@ -117,7 +117,7 @@ class AbstractBackend(object):
     def led(self):
         # type: () -> AbstractLed
         """
-        Reference to :class:`~leolani.framework.backend.api.led.AbstractLed`
+        Reference to :class:`~cltl.combot.backend.api.led.AbstractLed`
 
         Returns
         -------
@@ -129,7 +129,7 @@ class AbstractBackend(object):
     def tablet(self):
         # type: () -> AbstractTablet
         """
-        Reference to :class:`~leolani.framework.backend.api.tablet.AbstractTablet`
+        Reference to :class:`~cltl.combot.backend.api.tablet.AbstractTablet`
 
         Returns
         -------

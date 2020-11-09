@@ -1,5 +1,5 @@
-from leolani.framework.backend.api.backend import AbstractBackend
-from leolani.framework.infra.di_container import DIContainer
+from cltl.combot.backend.api.backend import AbstractBackend
+from cltl.combot.infra.di_container import DIContainer
 
 class BackendContainer(DIContainer):
     @property
@@ -8,6 +8,6 @@ class BackendContainer(DIContainer):
         """
         Returns
         -------
-        backend: AbstractBackend :class:`~leolani.framework.backend.api.AbstractBackend`
+        backend: AbstractBackend :class:`~cltl.combot.backend.api.AbstractBackend`
         """
         raise ValueError("No backend configured")

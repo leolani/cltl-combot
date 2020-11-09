@@ -1,7 +1,7 @@
 import time
 import uuid
 
-from leolani.framework.infra.di_container import DIContainer
+from cltl.combot.infra.di_container import DIContainer
 
 
 class TopicError(ValueError):

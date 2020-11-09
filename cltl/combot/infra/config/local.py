@@ -2,8 +2,8 @@ import os
 
 from configparser import ConfigParser
 
-import leolani
-from leolani.framework.infra.di_container import singleton
+import cltl
+from cltl.combot.infra.di_container import singleton
 from .api import Configuration, ConfigurationManager, ConfigurationContainer
 
 _DELIMITER = ","
@@ -15,7 +15,7 @@ _SECTION_ENVIRONMENT = "environment"
 
 class LocalConfigurationContainer(ConfigurationContainer):
     # TODO Get rid of the need for the root_dir
-    __config = ConfigParser({"root_dir": os.path.abspath(os.path.dirname(os.path.dirname(leolani.__file__)))}, strict=False)
+    __config = ConfigParser({"root_dir": os.path.abspath(os.path.dirname(os.path.dirname(cltl.__file__)))}, strict=False)
 
     @staticmethod
     def load_configuration(config_file=_CONFIG, additional_config_files=_ADDITIONAL_CONFIGS):

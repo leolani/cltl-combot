@@ -9,14 +9,14 @@ import numpy as np
 from PIL import Image
 from typing import Tuple, List, Optional
 
-from leolani.framework.infra.event.api import Event, EventBus
-from leolani.framework.infra.resource.api import ResourceManager
-from leolani.framework.infra.util import Mailbox, Scheduler, Bounds, spherical2cartesian
+from cltl.combot.infra.event.api import Event, EventBus
+from cltl.combot.infra.resource.api import ResourceManager
+from cltl.combot.infra.util import Mailbox, Scheduler, Bounds, spherical2cartesian
 
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "leolani.framework.backend.api.camera.topic"
+TOPIC = "cltl.combot.backend.api.camera.topic"
 
 
 class CameraResolution(enum.Enum):
