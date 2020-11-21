@@ -64,3 +64,4 @@ Distributed under the MIT License. See [`LICENSE`](https://github.com/leolani/cl
 * [Taewoon Kim](https://tae898.github.io/)
 * [Thomas Baier](https://www.linkedin.com/in/thomas-baier-05519030/)
 * [Selene Báez Santamaría](https://selbaez.github.io/)
+* [Piek Vossen](https://github.com/piekvossen)
