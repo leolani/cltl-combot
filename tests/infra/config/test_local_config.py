@@ -1,7 +1,7 @@
 import os
 import unittest
 
-import importlib_resources
+import importlib.resources
 from enum import Enum
 
 from cltl.combot.infra.config.local import LocalConfigurationContainer
@@ -14,7 +14,7 @@ class TestEnum(Enum):
 
 class ConfigurationManagerCase(unittest.TestCase):
     def setUp(self):
-        with importlib_resources.path(__package__, "test.config") as test_config:
+        with importlib.resources.path(__package__, "test.config") as test_config:
             LocalConfigurationContainer.load_configuration(str(test_config), [])
         self.configuration_manager = LocalConfigurationContainer().config_manager
 
