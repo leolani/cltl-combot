@@ -1,21 +1,11 @@
-# Leolani
+# CLTL Leolani Combot
 
-This repo has been created for human-robot interaction with conversation.
-This is the main framework repo.
+CLTL Leolani Combot provides the framework for applications that implement human-robot interaction with conversation.
 
 ## About the Project
 
-At [CLTL](http://www.cltl.nl/) we have an existing [Leolani platform](https://github.com/leolani/pepper), which we still develop and maintain to this date. However it has the following limitations:
-
-* It's based on a physical robot, which is are hard to prototpye.
-* It uses the Softbank SDK python2 library (it's the only option to be compatible with Softbank)
-* Pepper can't make facial expressions.
-
-This repo will overcome the limitations and foster the communications between humans and robots.
-
-## Work in Progress
-Refer to [`overall_architecture.md`](https://github.com/leolani/cltl-combot/blob/main/overall_architecture.md).
-
+This is the successor of the [Leolani platform](https://github.com/leolani/pepper) with a improved modular architecture.
+Refer to [`overall_architecture.md`](https://github.com/leolani/cltl-combot/blob/main/overall_architecture.md) for an overview.
 
 <!-- ## Getting Started
 
