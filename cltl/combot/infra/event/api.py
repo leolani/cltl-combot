@@ -11,9 +11,9 @@ class TopicError(ValueError):
 
 @dataclass
 class EventMetadata:
-    timestamp: int
-    offset: int
-    topic: str
+    timestamp: int = None
+    offset: int = None
+    topic: str = None
 
     @classmethod
     def with_(cls, metadata, timestamp: int = None, offset: int = None, topic: str = None) -> Optional["EventMetadata"]:
@@ -29,7 +29,7 @@ T = TypeVar("T")
 class Event(Generic[T]):
     id: str
     payload: T
-    metadata: EventMetadata
+    metadata: EventMetadata = EventMetadata()
 
     @classmethod
     def with_topic(cls, event, topic: str) -> Optional["Event"]:
