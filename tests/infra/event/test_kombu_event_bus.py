@@ -1,25 +1,30 @@
-import kombu
-from kombu import connections
-from time import time
+from types import SimpleNamespace
 
-import sys
+from kombu.serialization import register
+import json
+
 from unittest import mock
 
+import logging
+import sys
 import unittest
 
-from cltl.combot.test.util import await_predicate
 from cltl.combot.infra.config import ConfigurationManager
 from cltl.combot.infra.event.api import Event, EventMetadata
 from cltl.combot.infra.event.kombu import KombuEventBus
-
-
-import logging
+from cltl.combot.test.util import await_predicate
 
 logger = logging.getLogger()
 logger.level = logging.DEBUG
 stream_handler = logging.StreamHandler(sys.stdout)
 logger.addHandler(stream_handler)
 
+
+register('cltl-json',
+         lambda x: json.dumps(x, default=vars),
+         lambda x: json.loads(x, object_hook=lambda d: SimpleNamespace(**d)),
+         content_type='application/json',
+         content_encoding='utf-8')
 
 class KombuEventBusTestCase(unittest.TestCase):
 
@@ -31,8 +36,14 @@ class KombuEventBusTestCase(unittest.TestCase):
 
     def setUp(self):
         config_manager = mock.create_autospec(ConfigurationManager)
-        config_manager.get_config.return_value = {"server": "memory:///"}
-        self.event_bus = KombuEventBus(config_manager)
+        config_manager.get_config.return_value = {
+            "server": "memory:///",
+            "exchange": "cltl.combot",
+            "type": "direct",
+            "compression": "bzip2",
+        }
+
+        self.event_bus = KombuEventBus('cltl-json', config_manager)
         self.topic = "test topic - " + self.get_id()
 
     def tearDown(self) -> None:
@@ -103,8 +114,7 @@ class KombuEventBusTestCase(unittest.TestCase):
 
         self.assertEqual(sorted(t for t in self.event_bus.topics), [self.topic + "- One", self.topic + "- Two"])
         self.assertEqual(2, len(actual_events))
-        self.assertEqual(event_one, actual_events[0])
-        self.assertEqual(event_two, actual_events[1])
+        self.assertEqual({event_one.id, event_two.id}, set(e.id for e in actual_events))
 
     def test_unsubscribe(self):
         actual_events = []

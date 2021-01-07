@@ -3,7 +3,6 @@ from kombu import Connection, Exchange, Queue
 from kombu.mixins import ConsumerMixin
 from kombu.pools import producers, connections
 from threading import RLock, Thread
-from time import time
 from typing import Callable, Dict, Tuple, Set
 
 from cltl.combot.infra.config import ConfigurationManager
@@ -13,12 +12,18 @@ logger = logging.getLogger(__name__)
 
 
 class KombuEventBus(EventBus):
-    def __init__(self, config_manager: ConfigurationManager):
+    def __init__(self, serializer: str, config_manager: ConfigurationManager):
         config = config_manager.get_config("cltl.event.kombu")
+        server = config.get('server')
+        exchange = config.get('exchange')
+        exchange_type = config.get('type')
+        self._compression = config.get('compression')
+        self._serializer = serializer
 
         self._topic_lock = RLock()
-        self.connection = Connection(config.get('server'))
-        self.exchange = Exchange("cltl.combot", type='direct')
+        self.connection = Connection(server)
+        self.exchange = Exchange(exchange, type=exchange_type)
+
         self._producer_topics: Set[str] = set()
         self._consumers: Dict[str, _EventBusConsumer] = {}
         self._handlers: Dict[str, Tuple[Callable, ...]] = {}
@@ -29,8 +34,8 @@ class KombuEventBus(EventBus):
         with connections[self.connection].acquire(block=True) as connection:
             with producers[connection].acquire(block=True) as producer:
                 producer.publish(event,
-                                 serializer='pickle',
-                                 compression='bzip2',
+                                 serializer=self._serializer,
+                                 compression=self._compression,
                                  exchange=self.exchange,
                                  declare=[self.exchange],
                                  routing_key=topic)
@@ -41,7 +46,8 @@ class KombuEventBus(EventBus):
             start_consumer = False
             if topic not in self._consumers:
                 self._handlers[topic] = ()
-                consumer = _EventBusConsumer(self.connection, topic, self._topic_handler(topic))
+                consumer = _EventBusConsumer(self.connection, self.exchange, self._serializer,
+                                             topic, self._topic_handler(topic))
                 self._consumers[topic] = consumer
                 start_consumer = True
 
@@ -56,7 +62,7 @@ class KombuEventBus(EventBus):
         def handler(event):
             if topic in self._handlers:
                 for handl in self._handlers[topic]:
-                    handl(event.with_topic(topic))
+                    handl(Event.with_topic(event, topic))
 
         return handler
 
@@ -68,42 +74,42 @@ class KombuEventBus(EventBus):
                 try:
                     self._handlers[topic] = tuple(h for h in self._handlers if h is not handler)
                     if len(self._handlers[topic]) == 0:
-                        self._consumers[topic].should_stop = True
-                        self._consumers[topic].join()
-                        del self._consumers[topic]
-                        del self._handlers[topic]
+                        self._stop_consumer(topic)
                         logger.debug("Stopped EventBusConsumer for topic %s", topic)
                 except ValueError as e:
                     raise ValueError("Failed to unregister " + _format_name(handler), e)
                 logger.debug("Unsubscribed %s from topic %s", _format_name(handler), topic)
             else:
-                self._consumers[topic].should_stop = True
-                self._consumers[topic].join()
-                del self._consumers[topic]
-                del self._handlers[topic]
-                logger.debug("Unsubscribed all handlers from topic %s", topic)
+                self._stop_consumer(topic)
+                logger.debug("Unsubscribed all handlers and stopped consumer for topic %s", topic)
+
+    def _stop_consumer(self, topic):
+        self._consumers[topic].should_stop = True
+        self._consumers[topic].join()
+        del self._consumers[topic]
+        del self._handlers[topic]
 
     @property
     def topics(self):
+        return tuple(self._consumers.keys() | self._producer_topics)
         with self._topic_lock:
-            return tuple(self._consumers.keys() | self._producer_topics)
-
+            pass
 
 
 class _EventBusConsumer(ConsumerMixin, Thread):
-    def __init__(self, connection, topic, callback):
+    def __init__(self, connection, exchange, serializer, topic, callback):
         super().__init__(name=f"EventBusConsumer-{topic}-{_format_name(callback)}" + topic)
         self.connection = connection
+        self.serializer = serializer
         self.topic = topic
         self.callback = callback
-        self.exchange = Exchange('cltl.combot', type='direct')
-        self.queue = Queue(topic, self.exchange, routing_key=topic)
+        self.queue = Queue(topic, exchange, routing_key=topic)
 
     def get_consumers(self, Consumer, channel):
-        return [Consumer([self.queue], accept=['pickle'], callbacks=[self.on_message])]
+        return [Consumer([self.queue], accept=[self.serializer], callbacks=[self.on_message])]
 
     def on_message(self, body, message):
-        logger.debug("%s RECEIVED MESSAGE: %s", time(), body)
+        logger.debug("Received message: %s", body)
         self.callback(body)
         message.ack()
 
