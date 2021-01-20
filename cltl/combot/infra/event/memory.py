@@ -2,13 +2,12 @@ import logging
 from threading import RLock
 
 from cltl.combot.infra.di_container import singleton
-from cltl.combot.infra.event.api import EventBusContainer, EventBus
+from cltl.combot.infra.event.api import EventBusContainer, EventBus, Event
 
 logger = logging.getLogger(__name__)
 
 
 class SynchronousEventBusContainer(EventBusContainer):
-
     logger.info("Initialized SynchronousEventBusContainer")
 
     @property
@@ -24,7 +23,7 @@ class SynchronousEventBus(EventBus):
 
     def publish(self, topic, event):
         for handler in self.__get_handlers(topic):
-            handler(event.with_topic(topic))
+            handler(Event.with_topic(event, topic))
 
     def subscribe(self, topic, handler):
         with self._topic_lock:
