@@ -1,37 +1,22 @@
 SHELL = /bin/bash
 
-
 project_root ?= $(realpath ..)
 project_name = $(notdir $(realpath .))
-project_version ?= "0.0.1-dev"
+project_version = $(shell cat version.txt)
 project_repo ?= ${project_root}/cltl-requirements/leolani
-proj = $(project_root)/$(project_name)
+project_mirror ?= ${project_root}/cltl-requirements/mirror
 
+dependencies = $(addprefix $(project_root)/, cltl-requirements)
 
 .DEFAULT_GOAL := install
 
-.PHONY: depend
-depend:
-	touch makefile.d
+include $(project_root)/$(project_name)/*.mk
 
-.PHONY: clean
-clean:
-	rm -rf dist
 
-venv:
-	python -m venv venv
-	source venv/bin/activate; \
-		pip install -r requirements.txt
+clean: py-clean
 
-dist: cltl venv
-	source venv/bin/activate; \
-		python setup.py sdist; \
-		deactivate
-
-.PHONY: install
-install: dist
-	cp dist/*.tar.gz $(project_repo)
+install: py-install
 
 .PHONY: docker
-docker: install
+docker: py-install
 	DOCKER_BUILDKIT=1 docker build -t cltl/${project_name}:${project_version} .
