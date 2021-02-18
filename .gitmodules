@@ -1,3 +1,4 @@
 [submodule "util"]
 	path = util
-	url = /Users/tkb/automatic/workspaces/robo/leolani-namespace/cltl-build
+	url = https://github.com/leolani/cltl-build
+	branch = main
