@@ -154,7 +154,7 @@ class AbstractMicrophone(object):
         # Don't wait forever for the queue, otherwise we can't terminate the worker
         audio = self._queue.get(timeout=2*self._timeout_interval)
         if not self._muted:
-            self._event_bus.publish(TOPIC, Event(audio, None))
+            self._event_bus.publish(TOPIC, Event.for_payload(audio))
 
         # Update Statistics
         self._update_dt(len(audio))

@@ -51,7 +51,7 @@ class KombuEventBusTestCase(unittest.TestCase):
             self.event_bus.unsubscribe(topic)
 
     def test_publish(self):
-        event = Event("test payload - " + self.get_id(), EventMetadata())
+        event = Event.for_payload("test payload - " + self.get_id())
         self.event_bus.publish(self.topic, event)
 
         self.assertEqual([self.topic], [ t for t in self.event_bus.topics ])
@@ -62,7 +62,7 @@ class KombuEventBusTestCase(unittest.TestCase):
         def handler(ev):
             actual_events.append(ev)
 
-        event = Event("test payload - " + self.get_id(), EventMetadata())
+        event = Event.for_payload("test payload - " + self.get_id())
 
         self.event_bus.subscribe(self.topic, handler)
         self.event_bus.publish(self.topic, event)
@@ -81,7 +81,7 @@ class KombuEventBusTestCase(unittest.TestCase):
         def handler_two(ev):
             actual_events.append(ev)
 
-        event = Event("test payload - " + self.get_id(), EventMetadata())
+        event = Event.for_payload("test payload - " + self.get_id())
 
         self.event_bus.subscribe(self.topic, handler_one)
         self.event_bus.subscribe(self.topic, handler_two)
@@ -102,8 +102,8 @@ class KombuEventBusTestCase(unittest.TestCase):
         def handler_two(ev):
             actual_events.append(ev)
 
-        event_one = Event("test payload one - " + self.get_id(), EventMetadata())
-        event_two = Event("test payload two - " + self.get_id(), EventMetadata())
+        event_one = Event.for_payload("test payload one - " + self.get_id())
+        event_two = Event.for_payload("test payload two - " + self.get_id())
 
         self.event_bus.subscribe(self.topic + "- One", handler_one)
         self.event_bus.subscribe(self.topic + "- Two", handler_two)
@@ -122,7 +122,7 @@ class KombuEventBusTestCase(unittest.TestCase):
         def handler(ev):
             actual_events.append(ev)
 
-        event = Event("test payload - " + self.get_id(), EventMetadata())
+        event = Event.for_payload("test payload - " + self.get_id())
 
         self.event_bus.subscribe(self.topic, handler)
         self.event_bus.publish(self.topic, event)

@@ -331,7 +331,7 @@ class AbstractCamera(object):
         # Get latest image from Mailbox
         image = self._mailbox.get()
 
-        self._event_bus.publish(TOPIC, Event(image, None))
+        self._event_bus.publish(TOPIC, Event.for_payload(image))
 
         # Update Statistics
         self._update_dt()

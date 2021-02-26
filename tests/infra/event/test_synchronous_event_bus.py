@@ -9,7 +9,7 @@ class SynchronousEventBusTestCase(unittest.TestCase):
         self.event_bus = SynchronousEventBus()
 
     def test_publish(self):
-        event = Event("test payload", EventMetadata())
+        event = Event.for_payload("test payload")
         self.event_bus.publish("testTopic", event)
 
         self.assertEqual([ t for t in self.event_bus.topics ], ["testTopic"])
@@ -18,7 +18,7 @@ class SynchronousEventBusTestCase(unittest.TestCase):
         actual_events = []
         handler = lambda ev: actual_events.append(ev)
 
-        event = Event("test payload", EventMetadata())
+        event = Event.for_payload("test payload")
 
         self.event_bus.subscribe("testTopic", handler)
         self.event_bus.publish("testTopic", event)
@@ -31,7 +31,7 @@ class SynchronousEventBusTestCase(unittest.TestCase):
         handler_one = lambda ev: actual_events.append(ev)
         handler_two = lambda ev: actual_events.append(ev)
 
-        event = Event("test payload", EventMetadata())
+        event = Event.for_payload("test payload")
 
         self.event_bus.subscribe("testTopic", handler_one)
         self.event_bus.subscribe("testTopic", handler_two)
@@ -46,8 +46,8 @@ class SynchronousEventBusTestCase(unittest.TestCase):
         handler_one = lambda ev: actual_events.append(ev)
         handler_two = lambda ev: actual_events.append(ev)
 
-        event_one = Event("test payload one", EventMetadata())
-        event_two = Event("test payload two", EventMetadata())
+        event_one = Event.for_payload("test payload one")
+        event_two = Event.for_payload("test payload two")
 
         self.event_bus.subscribe("testTopicOne", handler_one)
         self.event_bus.subscribe("testTopicTwo", handler_two)
@@ -63,7 +63,7 @@ class SynchronousEventBusTestCase(unittest.TestCase):
         actual_events = []
         handler = lambda ev: actual_events.append(ev)
 
-        event = Event("test payload", EventMetadata())
+        event = Event.for_payload("test payload")
 
         self.event_bus.subscribe("testTopic", handler)
         self.event_bus.publish("testTopic", event)

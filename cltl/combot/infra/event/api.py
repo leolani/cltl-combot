@@ -1,6 +1,8 @@
+import uuid
 from dataclasses import dataclass
-
 from typing import TypeVar, Generic, Optional, Iterable, Callable
+
+import time
 
 from cltl.combot.infra.di_container import DIContainer
 
@@ -11,12 +13,12 @@ class TopicError(ValueError):
 
 @dataclass
 class EventMetadata:
-    timestamp: int = None
-    offset: int = None
-    topic: str = None
+    timestamp: float = time.time()
+    offset: int = -1
+    topic: str = ""
 
     @classmethod
-    def with_(cls, metadata, timestamp: int = None, offset: int = None, topic: str = None) -> Optional["EventMetadata"]:
+    def with_(cls, metadata, timestamp: float = None, offset: int = None, topic: str = None) -> Optional["EventMetadata"]:
         new_timestamp = timestamp if timestamp is not None else metadata.timestamp
         new_offset = offset if offset is not None else metadata.offset
         new_topic = topic if topic is not None else metadata.topic
@@ -30,6 +32,10 @@ class Event(Generic[T]):
     id: str
     payload: T
     metadata: EventMetadata = EventMetadata()
+
+    @classmethod
+    def for_payload(cls, payload: T) -> Optional["Event"]:
+        return cls(str(uuid.uuid4()), payload)
 
     @classmethod
     def with_topic(cls, event, topic: str) -> Optional["Event"]:
