@@ -26,7 +26,7 @@ class TestConfiguration(Configuration):
         return self.get(key)
 
 
-def await_predicate(predicate: Callable[[Any], bool], msg: str = "predicate", repeat: int = 100,
+def await_predicate(predicate: Callable[[Any], bool], msg: str = "predicate", repeat: int = 1000,
                     sleep_interval: float = 0.01) -> None:
     cnt = 0
     while not predicate() and cnt < repeat:
