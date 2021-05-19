@@ -1,6 +1,7 @@
 from cltl.combot.backend.api.backend import AbstractBackend
 from cltl.combot.infra.di_container import DIContainer
 
+
 class BackendContainer(DIContainer):
     @property
     def backend(self):
