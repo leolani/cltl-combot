@@ -14,6 +14,11 @@ class DIContainer(object):
     _lock = Lock()
     _singletons = dict()
 
+    @classmethod
+    def _reset(cls):
+        cls._lock = Lock()
+        cls._singletons = dict()
+
 
 def singleton_for_kw(keys):
     """
