@@ -1,14 +1,34 @@
+import json
 import logging
+from types import SimpleNamespace
+
 from kombu import Connection, Exchange, Queue
 from kombu.mixins import ConsumerMixin
 from kombu.pools import producers, connections
 from threading import RLock, Thread
 from typing import Callable, Dict, Tuple, Set
+from kombu.serialization import register
 
-from cltl.combot.infra.config import ConfigurationManager
-from cltl.combot.infra.event import EventBus, Event
+from cltl.combot.infra.di_container import singleton
+from cltl.combot.infra.config import ConfigurationManager, ConfigurationContainer
+from cltl.combot.infra.event import EventBusContainer, EventBus, Event
 
 logger = logging.getLogger(__name__)
+
+
+class KombuEventBusContainer(EventBusContainer, ConfigurationContainer):
+    logger.info("Initialized KombuEventBusContainer")
+
+    @property
+    @singleton
+    def event_bus(self):
+        register('cltl-json',
+                 lambda x: json.dumps(x, default=vars),
+                 lambda x: json.loads(x, object_hook=lambda d: SimpleNamespace(**d)),
+                 content_type='application/json',
+                 content_encoding='utf-8')
+
+        return KombuEventBus('cltl-json', self.config_manager)
 
 
 class KombuEventBus(EventBus):
@@ -39,7 +59,6 @@ class KombuEventBus(EventBus):
                                  exchange=self.exchange,
                                  declare=[self.exchange],
                                  routing_key=topic)
-        print(event)
 
     def subscribe(self, topic, handler: Callable[[Event], None]) -> None:
         with self._topic_lock:
@@ -56,7 +75,7 @@ class KombuEventBus(EventBus):
             if start_consumer:
                 self._consumers[topic].start()
 
-        logger.debug("Subscribed %s to topic %s", _format_name(handler), topic)
+        logger.info("Subscribed %s to topic %s", _format_name(handler), topic)
 
     def _topic_handler(self, topic: str):
         def handler(event):
@@ -92,8 +111,6 @@ class KombuEventBus(EventBus):
     @property
     def topics(self):
         return tuple(self._consumers.keys() | self._producer_topics)
-        with self._topic_lock:
-            pass
 
 
 class _EventBusConsumer(ConsumerMixin, Thread):
