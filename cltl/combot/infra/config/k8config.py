@@ -19,30 +19,30 @@ class K8LocalConfigurationContainer(local_config.LocalConfigurationContainer):
                            k8_configs=K8_CONFIG_DIR, k8_config_file=K8_CONFIG):
         configs = additional_config_files
         try:
-            K8LocalConfigurationContainer._copy_k8_config(k8_configs, k8_config_file)
+            copy_k8_config(k8_configs, k8_config_file)
             configs += [k8_config_file]
         except OSError:
             logger.exception("Could not load kubernetes config map from %s to %s", k8_configs, k8_config_file)
 
         local_config.LocalConfigurationContainer.load_configuration(config_file, configs)
 
-    @staticmethod
-    def _copy_k8_config(k8_config_dir, k8_config_file):
-        k8_configs = tuple(file for file in os.listdir(k8_config_dir) if not file.startswith("."))
-        logger.debug("Found kubernetes config maps %s in %s", k8_configs, k8_config_dir)
 
-        k8_sections = {section: K8LocalConfigurationContainer._read_config(k8_config_dir, section)
-                       for section in k8_configs}
+def copy_k8_config(k8_config_dir, k8_config_file):
+    k8_configs = tuple(file for file in os.listdir(k8_config_dir) if not file.startswith("."))
+    logger.debug("Found kubernetes config maps %s in %s", k8_configs, k8_config_dir)
 
-        with open(k8_config_file, 'w') as k8_cfg:
-            logger.info("Writing %s", k8_cfg)
-            for section_name, section_values in k8_sections.items():
-                k8_cfg.write(f"[{section_name}]\n")
-                k8_cfg.write(section_values)
-                k8_cfg.write("\n")
+    k8_sections = {section: _read_config(k8_config_dir, section)
+                   for section in k8_configs}
 
-    @staticmethod
-    def _read_config(k8_configs, config_file):
-        logger.info("Loading %s/%s", k8_configs, config_file)
-        with open(os.path.join(k8_configs, config_file)) as cfg:
-            return cfg.read()
+    with open(k8_config_file, 'w') as k8_cfg:
+        logger.info("Writing %s", k8_cfg)
+        for section_name, section_values in k8_sections.items():
+            k8_cfg.write(f"[{section_name}]\n")
+            k8_cfg.write(section_values)
+            k8_cfg.write("\n")
+
+
+def _read_config(k8_configs, config_file):
+    logger.info("Loading %s/%s", k8_configs, config_file)
+    with open(os.path.join(k8_configs, config_file)) as cfg:
+        return cfg.read()

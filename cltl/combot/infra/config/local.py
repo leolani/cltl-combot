@@ -15,28 +15,34 @@ ADDITIONAL_CONFIGS = ["config/pepper.config", "config/credentials.config"]
 SECTION_ENVIRONMENT = "environment"
 
 
+def load_configuration(config_file=CONFIG, additional_config_files=ADDITIONAL_CONFIGS):
+    config = ConfigParser({}, strict=False)
+    if config_file:
+        with open(config_file, 'r') as cfg:
+            config.read_file(cfg)
+    if additional_config_files:
+        config.read(additional_config_files)
+
+    if config.has_section(SECTION_ENVIRONMENT):
+        for key, value in config.items(SECTION_ENVIRONMENT):
+            # items(section) includes also all entries from the default section
+            if key not in config.defaults():
+                # keys are converted to lower case by ConfigParser
+                os.environ[key.upper()] = value
+
+    logger.info("Loaded configuration: %s",
+                {section: dict(config[section])
+                 for section in config.sections() + ["DEFAULT"]})
+
+    return config
+
+
 class LocalConfigurationContainer(ConfigurationContainer):
     __config = None
 
     @staticmethod
     def load_configuration(config_file=CONFIG, additional_config_files=ADDITIONAL_CONFIGS):
-        LocalConfigurationContainer.__config = ConfigParser({}, strict=False)
-        if config_file:
-            with open(config_file) as cfg:
-                LocalConfigurationContainer.__config.read_file(cfg)
-        if additional_config_files:
-            LocalConfigurationContainer.__config.read(additional_config_files)
-
-        if LocalConfigurationContainer.__config.has_section(SECTION_ENVIRONMENT):
-            for key, value in LocalConfigurationContainer.__config.items(SECTION_ENVIRONMENT):
-                # items(section) includes also all entries from the default section
-                if key not in LocalConfigurationContainer.__config.defaults():
-                    # keys are converted to lower case by ConfigParser
-                    os.environ[key.upper()] = value
-
-        logger.info("Loaded configuration: %s",
-                    {section: dict(LocalConfigurationContainer.__config[section])
-                     for section in LocalConfigurationContainer.__config.sections() + ["DEFAULT"]})
+        LocalConfigurationContainer.__config = load_configuration(config_file, additional_config_files)
 
     @staticmethod
     def get_config(name, key):

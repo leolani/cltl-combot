@@ -19,9 +19,10 @@ class ConfigurationManagerCase(unittest.TestCase):
     def setUp(self):
         _, self.k8_config_file = tempfile.mkstemp(prefix="test_k8_config_")
 
-        with importlib.resources.path(__package__, "k8_configs") as k8_configs:
-            K8LocalConfigurationContainer.load_configuration(config_file=None, additional_config_files=[],
-                                                             k8_configs=str(k8_configs), k8_config_file=self.k8_config_file)
+        package_path, _ = os.path.split(__file__)
+        k8_configs = os.path.join(package_path, "k8_configs")
+        K8LocalConfigurationContainer.load_configuration(config_file=None, additional_config_files=[],
+                                                         k8_configs=str(k8_configs), k8_config_file=self.k8_config_file)
         self.configuration_manager = K8LocalConfigurationContainer().config_manager
 
     def tearDown(self) -> None:
