@@ -1,26 +1,42 @@
 import enum
 
 
+class Certainty(enum.Enum):
+    UNDERSPECIFIED = 0
+    POSSIBLE = 1
+    PROBABLE = 2
+    CERTAIN = 3
+
+
+class Polarity(enum.Enum):
+    UNDERSPECIFIED = 0
+    NEGATIVE = 1
+    POSITIVE = 2
+
+
+class Sentiment(enum.Enum):
+    UNDERSPECIFIED = 0
+    NEGATIVE = 1
+    NEUTRAL = 2
+    POSITIVE = 3
+
+
 class Emotion(enum.Enum):
-    """
-    This will be used in the future to represent emotion
-    """
-    ANGER = 0
-    DISGUST = 1
-    FEAR = 2
-    JOY = 3
-    SADNESS = 4
-    SURPRISE = 5
-    NEUTRAL = 6
+    UNDERSPECIFIED = 0
+    ANGER = 1
+    DISGUST = 2
+    FEAR = 3
+    JOY = 4
+    SADNESS = 5
+    SURPRISE = 6
+    NEUTRAL = 7
 
 
 class Time(enum.Enum):
-    """
-    This will be used in the future to represent tense
-    """
-    PAST = -1
-    PRESENT = 0
-    FUTURE = 1
+    UNDERSPECIFIED = 0
+    PAST = 1
+    PRESENT = 2
+    FUTURE = 3
 
 
 class UtteranceType(enum.Enum):

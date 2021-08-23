@@ -7,7 +7,7 @@ CLTL Leolani Combot provides the framework for applications that implement human
 This is the successor of the [Leolani platform](https://github.com/leolani/pepper) with a improved modular architecture.
 Refer to [`overall_architecture.md`](https://github.com/leolani/cltl-combot/blob/main/overall_architecture.md) for an overview.
 
-<!-- ## Getting Started
+## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
@@ -15,17 +15,19 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 ```
-TBD
+https://github.com/leolani/cltl-requirements
 ```
 
 ### Installation
 
 ```
-TBD
+git clone --recurse-submodules https://github.com/leolani/cltl-combot.git
+cd cltl-combot
+make build
 ```
 
 
-## Usage
+<!-- ## Usage
 
 TBD -->
 
