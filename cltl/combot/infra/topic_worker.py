@@ -5,7 +5,7 @@ from threading import Thread
 from time import sleep
 
 from enum import Enum
-from typing import Iterable, Optional, Union
+from typing import Iterable, Optional, Union, Callable
 
 from cltl.combot.infra.event.api import EventBus, Event, TopicError
 from cltl.combot.infra.resource.api import ResourceManager, LockTimeoutError
@@ -28,10 +28,12 @@ class TopicWorker(Thread):
     Process events on a topic from the event bus.
     """
 
-    def __init__(self, topics, event_bus, interval=0, scheduled=None, name=None,
-                 buffer_size=1, rejection_strategy=RejectionStrategy.OVERWRITE,
-                 resource_manager=None, requires=(), provides=()):
-        # type: (Union[str, Iterable[str]], EventBus, float, float, str, int, RejectionStrategy, ResourceManager, Iterable[str], Iterable[str]) -> None
+    def __init__(self, topics: Union[str, Iterable[str]], event_bus: EventBus,
+                 interval: float = 0, scheduled: float = None, name: str = None, buffer_size: int = 1,
+                 rejection_strategy: RejectionStrategy = RejectionStrategy.OVERWRITE,
+                 resource_manager: ResourceManager = None,
+                 requires: Iterable[str] = (), provides: Iterable[str] = (),
+                 processor: Callable[[Optional[Event]], None] = None):
         """
         Parameters
         ----------
@@ -58,7 +60,9 @@ class TopicWorker(Thread):
         self._provides = provides
         self._started = threading.Event()
         self._running = False
-        self._stop_event = None # type: threading.Event
+        self._stop_event = None
+
+        self._processor = processor
 
     def start(self):
         # type: () -> threading.Event
@@ -152,11 +156,10 @@ class TopicWorker(Thread):
                     # Ignore error if resource is already provided
                     pass
 
-    def process(self, event):
-        # type: (Optional[Event]) -> None
-        pass
+    def process(self, event: Optional[Event]) -> None:
+        if self._processor:
+            self._processor(event)
 
     @property
-    def event_bus(self):
-        # type: () -> EventBus
+    def event_bus(self) -> EventBus:
         return self._event_bus
