@@ -3,14 +3,14 @@ from setuptools import setup, find_namespace_packages
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-with open("version.txt", "r") as fh:
-    version = fh.read()
+with open("VERSION", "r") as fh:
+    version = fh.read().strip()
 
 setup(
     name='cltl.combot',
     version=version,
     packages=find_namespace_packages(include=['cltl.*']),
-    data_files=[('version.txt', ['version.txt'])],
+    data_files=[('VERSION', ['VERSION'])],
     url="https://github.com/leolani/cltl-combot",
     license='MIT License',
     author='CLTL',
