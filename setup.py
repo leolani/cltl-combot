@@ -9,7 +9,8 @@ with open("VERSION", "r") as fh:
 setup(
     name='cltl.combot',
     version=version,
-    packages=find_namespace_packages(include=['cltl.*']),
+    package_dir={'': 'src'},
+    packages=find_namespace_packages(include=['cltl.*'], where='src'),
     data_files=[('VERSION', ['VERSION'])],
     url="https://github.com/leolani/cltl-combot",
     license='MIT License',
