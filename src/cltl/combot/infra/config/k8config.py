@@ -22,7 +22,7 @@ class K8LocalConfigurationContainer(local_config.LocalConfigurationContainer):
             copy_k8_config(k8_configs, k8_config_file)
             configs += [k8_config_file]
         except OSError:
-            logger.exception("Could not load kubernetes config map from %s to %s", k8_configs, k8_config_file)
+            logger.warning("Could not load kubernetes config map from %s to %s", k8_configs, k8_config_file)
 
         local_config.LocalConfigurationContainer.load_configuration(config_file, configs)
 
