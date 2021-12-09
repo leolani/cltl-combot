@@ -1,9 +1,6 @@
 import logging
 import os
 
-from cltl.combot.infra.di_container import singleton
-
-from .api import ConfigurationContainer
 import cltl.combot.infra.config.local as local_config
 
 logger = logging.getLogger(__name__)

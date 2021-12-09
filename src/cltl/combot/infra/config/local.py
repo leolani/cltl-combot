@@ -3,7 +3,7 @@ import os
 from configparser import ConfigParser
 
 from cltl.combot.infra.di_container import singleton
-from .api import Configuration, ConfigurationManager, ConfigurationContainer
+from cltl.combot.infra.config.api import Configuration, ConfigurationManager, ConfigurationContainer
 
 logger = logging.getLogger(__name__)
 
