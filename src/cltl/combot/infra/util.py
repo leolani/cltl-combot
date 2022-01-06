@@ -73,3 +73,6 @@ class ThreadsafeBoolean:
     def value(self, value):
         with self._lock:
             self._value = value
+
+    def __bool__(self):
+        return self.value
