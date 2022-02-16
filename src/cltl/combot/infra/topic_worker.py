@@ -20,12 +20,24 @@ class RejectionStrategy(Enum):
     OVERWRITE = 0
     DROP = 1
     BLOCK = 2
-    EXCEPTION = 2
+    EXCEPTION = 3
 
 
 class TopicWorker(Thread):
     """
     Process events on a topic from the event bus.
+
+    The topic worker listens to events from the specified topics and puts them
+    on an internal processing queue. The queue is then processed in a sequential
+    manner.
+
+    The topic worker waits until all required resources (typically the topics) are
+    available before starting to listen to the specified topics. It also registers
+    the specified provided resources before starting.
+
+    For the case when a maximum size for the processing queue is specified and
+    events are received faster than they can be processed, a rejection strategy
+    can be provided.
     """
 
     def __init__(self, topics: Union[str, Iterable[str]], event_bus: EventBus,
@@ -37,16 +49,29 @@ class TopicWorker(Thread):
         """
         Parameters
         ----------
-        topics : str
+        topics : Union[str, Iterable[str]]
+            One or more topics the worker is listening to.
         event_bus : EventBus
+            The Event bus of the application.
         interval : float
-        scheduled : bool
+            Wait interval between processing consecutive events.
+        scheduled : float
+            If set, the processor is invoked after the specified amount of
+            seconds even if there is no event scheduled.
         name : str
+            Name of the topic worker.
         buffer_size : int
+            Size of the internal buffer of the worker.
         rejection_strategy : RejectionStrategy
+            Strategy to use when the interal buffer is full.
         resource_manager : ResourceManager
+            The resource manager of the application.
         requires : Iterable[str]
+            Resources required by the topic worker.
         provides : Iterable[str]
+            Resources provided by the topic worker.
+        processor:  Callable[[Optional[Event]], None]
+            Function to call for each event. Alternatively override the `process` method.
         """
         super(TopicWorker, self).__init__(name=name if name else self.__class__.__name__)
         self._event_bus = event_bus
@@ -65,7 +90,6 @@ class TopicWorker(Thread):
         self._processor = processor
 
     def start(self):
-        # type: () -> threading.Event
         logger.info("Starting topic worker %s", self.name)
 
         super(TopicWorker, self).start()
@@ -73,7 +97,6 @@ class TopicWorker(Thread):
         return self._started
 
     def stop(self):
-        # type: () -> None
         for topic in self._topics:
             try:
                 self._event_bus.unsubscribe(topic, self.__accept_event)
@@ -157,6 +180,17 @@ class TopicWorker(Thread):
                     pass
 
     def process(self, event: Optional[Event]) -> None:
+        """
+        Process incoming events.
+
+        Override this method or provide a processing function to the constructor.
+
+        Parameters
+        ----------
+        event : Optional[Event]
+            The next event or None if no event was available and the topcic worker is configured
+            to be called in a scheduled manner.
+        """
         if self._processor:
             self._processor(event)
 
