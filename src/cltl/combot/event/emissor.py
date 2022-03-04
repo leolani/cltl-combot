@@ -56,5 +56,4 @@ M = TypeVar('M', bound=Mention)
 @dataclass
 class AnnotationEvent(Generic[M]):
     type: str
-    modality: Modality
     mentions: List[M]
