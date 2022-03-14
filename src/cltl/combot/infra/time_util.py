@@ -13,4 +13,4 @@ def timestamp_now() -> int:
     int
         The current timestamp in milliseconds
     """
-    return time.time_ns() // 1000
+    return time.time_ns() // 1_000_000
