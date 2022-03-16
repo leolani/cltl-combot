@@ -70,9 +70,12 @@ class ThreadsafeBoolean:
             return self._value
 
     @value.setter
-    def value(self, value):
+    def value(self, value: bool):
         with self._lock:
             self._value = value
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return self.value
+
+    def __str__(self) -> str:
+        return str(self.value)

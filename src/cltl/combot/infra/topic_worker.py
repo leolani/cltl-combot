@@ -1,14 +1,16 @@
 import logging
 import threading
+from enum import Enum
 from queue import Queue, Empty, Full
 from threading import Thread
-from time import sleep
-
-from enum import Enum
 from typing import Iterable, Optional, Union, Callable
 
+from time import sleep
+
+from cltl.combot.event.bdi import IntentionEvent
 from cltl.combot.infra.event.api import EventBus, Event, TopicError
 from cltl.combot.infra.resource.api import ResourceManager, LockTimeoutError
+from cltl.combot.infra.util import ThreadsafeBoolean
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +33,9 @@ class TopicWorker(Thread):
     on an internal processing queue. The queue is then processed in a sequential
     manner.
 
+    The topic worker supports to specify intentions for which it will be accepting or
+    rejecting events.
+
     The topic worker waits until all required resources (typically the topics) are
     available before starting to listen to the specified topics. It also registers
     the specified provided resources before starting.
@@ -45,6 +50,7 @@ class TopicWorker(Thread):
                  rejection_strategy: RejectionStrategy = RejectionStrategy.OVERWRITE,
                  resource_manager: ResourceManager = None,
                  requires: Iterable[str] = (), provides: Iterable[str] = (),
+                 intentions: Iterable[str] = (), intention_topic: str = None,
                  processor: Callable[[Optional[Event]], None] = None):
         """
         Parameters
@@ -70,12 +76,18 @@ class TopicWorker(Thread):
             Resources required by the topic worker.
         provides : Iterable[str]
             Resources provided by the topic worker.
-        processor:  Callable[[Optional[Event]], None]
+        intentions : Iterable[str]
+            Intention identifiers for which the `TopicWorker` will be active. If the
+            identifier is prefixed with and `!` the `TopicWorker` will be inactive
+            for the respective intention.
+        intention_topic : str
+            The topic name on which the `TopicWorker` will listen to `IntentionEvent`s
+        processor :  Callable[[Optional[Event]], None]
             Function to call for each event. Alternatively override the `process` method.
         """
         super(TopicWorker, self).__init__(name=name if name else self.__class__.__name__)
         self._event_bus = event_bus
-        self._topics = topics if not isinstance(topics, str) else (topics,)
+        self._topics = set(topics) if not isinstance(topics, str) else {topics}
         self._interval = interval
         self._scheduled = scheduled
         self._buffer = Queue(maxsize=buffer_size)
@@ -83,6 +95,13 @@ class TopicWorker(Thread):
         self._resource_manager = resource_manager
         self._requires = requires
         self._provides = provides
+
+        self._intention_topic = intention_topic
+        self._inactive_intentions = set(intention[1:] for intention in intentions if intention.startswith("!"))
+        self._active_intentions = set(intention for intention in intentions if not intention.startswith("!"))
+        self._intention_lock = threading.Lock()
+        self._active = ThreadsafeBoolean(not self._active_intentions)
+
         self._started = threading.Event()
         self._running = False
         self._stop_event = None
@@ -119,6 +138,8 @@ class TopicWorker(Thread):
 
         for topic in self._topics:
             self._event_bus.subscribe(topic, self.__accept_event)
+        if self._intention_topic:
+            self._event_bus.subscribe(self._intention_topic, self.__accept_event)
 
         self._started.set()
 
@@ -145,6 +166,10 @@ class TopicWorker(Thread):
             logger.exception("Error during thread execution (%s)", self.name)
 
     def __accept_event(self, event):
+        accept = self._check_intention(event)
+        if not accept:
+            return
+
         handled = False
         while not handled:
             try:
@@ -163,6 +188,28 @@ class TopicWorker(Thread):
                     handled = True
                 else:
                     raise ValueError("Unknown strategy: " + str(self._strategy))
+
+    def _check_intention(self, event: Event[IntentionEvent]) -> bool:
+        if not self._active_intentions and not self._inactive_intentions:
+            return True
+
+        if event.metadata.topic != self._intention_topic:
+            return self._active.value
+
+        if hasattr(event.payload, 'intentions'):
+            intentions = set(event.payload.intentions)
+            with self._intention_lock:
+                if intentions & self._inactive_intentions:
+                    self._active.value = False
+                elif not self._active_intentions:
+                    self._active.value = True
+                else:
+                    self._active.value = bool(intentions & self._active_intentions)
+
+            logger.info("%s topic worker %s for intentions %s", "Activated" if self._active else "Deactivated",
+                        self.name, intentions)
+
+        return self._intention_topic in self._topics
 
     def __resolve_dependencies(self):
         if self._resource_manager:
