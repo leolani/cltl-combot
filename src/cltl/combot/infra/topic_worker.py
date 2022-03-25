@@ -1,5 +1,6 @@
 import logging
 import threading
+import time
 from enum import Enum
 from queue import Queue, Empty, Full
 from threading import Thread
@@ -10,6 +11,7 @@ from time import sleep
 from cltl.combot.event.bdi import IntentionEvent
 from cltl.combot.infra.event.api import EventBus, Event, TopicError
 from cltl.combot.infra.resource.api import ResourceManager, LockTimeoutError
+from cltl.combot.infra.time_util import timestamp_now
 from cltl.combot.infra.util import ThreadsafeBoolean
 
 logger = logging.getLogger(__name__)
@@ -156,9 +158,12 @@ class TopicWorker(Thread):
 
     def __process_event(self):
         try:
+            start = timestamp_now()
             block = self._interval == 0
             timeout = self._scheduled if self._scheduled else 1  # Never block forever
-            self.process(self._buffer.get(block=block, timeout=timeout))
+            event = self._buffer.get(block=block, timeout=timeout)
+            self.process(event)
+            logger.debug("Processed event %s in %s ms for %s", event.id, timestamp_now() - start, self.name)
         except Empty:
             if self._scheduled:
                 self.process(None)
@@ -175,17 +180,20 @@ class TopicWorker(Thread):
             try:
                 self._buffer.put(event, block=self._strategy == RejectionStrategy.BLOCK)
                 handled = True
+                logger.debug("Queued event %s for %s", event.id, self.name)
             except Full as e:
                 if self._strategy == RejectionStrategy.EXCEPTION:
                     raise e
 
                 if self._strategy == RejectionStrategy.OVERWRITE:
                     try:
-                        self._buffer.get(block=False)
+                        dropped = self._buffer.get(block=False)
+                        logger.debug("Overwrote event %s with %s for %s", dropped.id, event.id, self.name)
                     except Empty:
                         pass
                 elif self._strategy == RejectionStrategy.DROP:
                     handled = True
+                    logger.debug("Dropped event %s for %s", event.id, self.name)
                 else:
                     raise ValueError("Unknown strategy: " + str(self._strategy))
 
