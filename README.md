@@ -6,14 +6,43 @@ CLTL Leolani Combot provides the framework for applications that implement human
 
 This is the successor of the [Leolani platform](https://github.com/leolani/pepper) with an improved modular architecture.
 
-## Getting Started
+## Applications
 
-### Applications
-
-Clone one of the application parents from this project space:
+Clone one of the application parents from this project space and follow the instructions there to run them:
 
 * [Eliza app](https://github.com/leolani/eliza-parent)
 * [Get to know you app](https://github.com/leolani/g2ky-parent)
+
+## Components
+
+Currently, the following components are implemented for the framework:
+
+* [Application Repository](https://github.com/leolani/cltl-requirements)  
+  Repository to share artifacts and external dependencies between components.
+* [EMISSOR](https://github.com/leolani/emissor)  
+  Representation of interaction data.
+* [Backend](https://github.com/leolani/cltl-backend)  
+  Hardware integration and signal generation.
+* [Automatic Speech Recognition (ASR)](https://github.com/leolani/cltl-asr)  
+  Transcription of audio signals to text.
+* [Voice Activity Detection (VAD)](https://github.com/leolani/cltl-vad)  
+  Detection of speech in audio signals.
+* [Face Recognition](https://github.com/leolani/cltl-face-recognition)  
+  Currently includes face detection, age-gender detection, face recognition
+* [Chat UI](https://github.com/leolani/cltl-chat-ui)  
+  Simple Chat client to display and interact with the conversation 
+* [Eliza chat](https://github.com/leolani/cltl-eliza)  
+  Eliza based chat.
+* [Get To Know You (G2KY) chat](https://github.com/leolani/cltl-g2ky)  
+  Establish name based on face recognition.
+
+To create a new component follow the instructions in the [template component](https://github.com/leolani/cltl-template).
+
+## Getting Started
+
+### Running an application
+
+Clone one of the above [applications](#Applications) and follow the instructions there to run them.
 
 ### Prerequisites
 
@@ -51,40 +80,62 @@ To be added.
 ## Development
 
 To work on the development of a specific [application](#applications), start from the parent repository
-and follow the steps described below. The description uses the Eliza app
+and follow the steps described below. The description uses the [Eliza app](https://github.com/leolani/eliza-parent)
 as example.
 
 ### Check-out
 
-To check out all code needed for the Eliza App, clone this repository including all submodules:
+To check out all code needed for the Eliza App, follow the instructions in the
+[Eliza app](https://github.com/leolani/eliza-parent).
 
-        git clone --recurse-submodules -j8 https://github.com/leolani/eliza-parent.git
+### Build and run the application
 
-### Workflow using PyCharm
+The application is structured into separate components which have their own *git* repositories
+and can be run as separate Python applications. The parent repository of the application contains
+all those component repositories as *git* submodules.
 
-1. Checkout the repository with submodules (see above).
-1. Build the project running `make build` from the parent root. This will create virtual environments for all components
-and build and install Python packages for each component.
-1. Go to `File > Open` in PyCharm and select the `cltl-eliza-app` as new project in PyCharm. Later, PyCharm will list the workbench with this project name in `Recently Opened`.
-1. To add the other components, go to `File > Open` again in PyCharm and select all other compoents. For each component choose `Attach` to add it
-to the current workbench. The virtual environments created in step 2 will be used automatically by PyCharm.
-1. Code changes in a single module do not require any special workflow, try to add unit tests to make sure the code works.
-1. To make code changes visible across modules, `make build` **must** be run from the parent project to rebuild packages and update the individual
-virtual environments of the components with the updated packages.
-1. Commit and push the code changes in the individual modules as usual.
-1. Create an application that configures and runs the components (see https://github.com/leolani/cltl-eliza-app for an example).
-1. Commit the state of the submodules in the parent when the components of the application are in a consistent state.
+There is a central application ([cltl-eliza-app](https://github.com/leolani/cltl-eliza-app)) that configures and runs
+all the necessary components it needs, either inside a Python application or as containerized services in a *Kubernetes*
+cluster or using *docker compose*. To run the application, first all components need to be packaged and made available
+to the application. For this purpose there are *makefiles* available in the components and the application parent that
+automate this process. To build the application run
 
-#### Things to pay attention to
+    make build
 
-1. In the above workflow each component has its own virtual environment in the `venv/` folder, and this is respected by PyCharm. For this reason,
-    - code becomes visible to other components only after running `make build`.
-    - navigation in PyCharm will lead to the **module in the virtual environment,
-     not to the original source**. Therefore, if you make changes there, they will
-     be overriden during the next build. You will also get a warning from PyCharm
-     if you try to edit those files.
-    - for debugging breakpoints need to be set in the virtual environemnt. To achieve that navigate there from the module that is run in PyCharm (app
-    component)
+from the **parent repository**. This command will download external dependencies to
+[cltl-requirements](https://github.com/leolani/cltl-requirements), setup virtual environments for all components, package
+them and publish the packages to [cltl-requirements](https://github.com/leolani/cltl-requirements) to make them available
+to the application and other components.
+
+To run the application follow the instructions in the [Eliza parent](https://github.com/leolani/eliza-parent).
+
+### Make changes to the code
+
+Individual components in the parent repository are edited and committed separately, and, after a stable version is
+reached, the state of the components is commited in the parent repository, for the workflow see
+[Working with git submodules](HOWTO/gitsubmodules.md).   
+Modularization allows developing components in isolation. The application and other components depend on a packaged
+version of a component only, therefore changes will become available outside of the component only after rebuilding
+the application, see above.
+
+To use PyCharm for development see the instructions in [Workflow using PyCharm](HOWTO/pycharm.md).
+
+To commit changes made to the application see the instructions in [Working with git submodules](HOWTO/gitsubmodules.md).
+
+### Adding a new component
+
+To add a new component to an application follow the instruction in the
+[template component](https://github.com/leolani/cltl-template).
+
+### Create a new application
+
+
+### HOWTOs
+
+* [Workflow using PyCharm](HOWTO/pycharm.md)
+* [Working with git submodules](HOWTO/gitsubmodules.md)
+* [Setup a new component](https://github.com/leolani/cltl-template.git)
+* [Add a component to a Python app]()
 
 ## Content of this repository
 
@@ -102,7 +153,7 @@ Components of the application can communicate via an event bus. The
 of the event bus.
 
 The `cltl.combot.infra.topic_worker` module provides a convenience class to
-implement the subscription to one or multiple topics in the event bus.~~~~
+implement the subscription to one or multiple topics in the event bus.
 
 #### Configuration manager
 
@@ -125,8 +176,8 @@ ease the usage of a consistent time format throughout the application.
 
 #### Dependency injection
 
-The `cltl.combot.infra.di_container` moduel provides a simple utility to use
-dependecy inject in the application. 
+The `cltl.combot.infra.di_container` module provides a simple utility to use
+dependency inject in the application. 
 
 ### Common libraries
 
@@ -134,8 +185,7 @@ To be added.
 
 ### Events based on EMISSOR
 
-To be moved from `cltl-backend`.
-
+The `cltl.combot.event` module contains common event payloads.
 
 ## Contributing
 
