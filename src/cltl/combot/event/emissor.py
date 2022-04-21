@@ -1,14 +1,49 @@
+import abc
 from dataclasses import dataclass
 from typing import Generic, TypeVar, List
 
-from emissor.representation.scenario import Modality, AudioSignal, TextSignal, ImageSignal, Signal, Mention
+from emissor.representation.scenario import Modality, AudioSignal, TextSignal, ImageSignal, Signal, Mention, Scenario, \
+    ScenarioContext
 
 S = TypeVar('S', bound=Signal)
+M = TypeVar('M', bound=Mention)
+
+
+#TODO
+@dataclass
+class LeolaniContext(ScenarioContext):
+    agent: str
+    speaker: str
+    location_id: str
+    location: str
 
 
 @dataclass
-class SignalEvent(Generic[S]):
+class EmissorEvent(abc.ABC):
     type: str
+
+
+@dataclass
+class ScenarioEvent(EmissorEvent):
+    scenario: Scenario
+
+
+@dataclass
+class ScenarioStarted(ScenarioEvent):
+    @classmethod
+    def create(cls, scenario: Scenario):
+        return cls(cls.__name__, scenario)
+
+
+@dataclass
+class ScenarioStopped(ScenarioEvent):
+    @classmethod
+    def create(cls, scenario: Scenario):
+        return cls(cls.__name__, scenario)
+
+
+@dataclass
+class SignalEvent(Generic[S], EmissorEvent):
     modality: Modality
     signal: S
 
@@ -51,9 +86,10 @@ class AudioSignalStopped(SignalStopped[AudioSignal]):
         return cls(cls.__name__, Modality.AUDIO, signal)
 
 
-M = TypeVar('M', bound=Mention)
-
 @dataclass
-class AnnotationEvent(Generic[M]):
-    type: str
+class AnnotationEvent(Generic[M], EmissorEvent):
     mentions: List[M]
+
+    @classmethod
+    def create(cls, mentions: List[M]):
+        return cls(cls.__name__, mentions)
