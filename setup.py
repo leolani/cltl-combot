@@ -11,6 +11,7 @@ setup(
     version=version,
     package_dir={'': 'src'},
     packages=find_namespace_packages(include=['cltl.*'], where='src'),
+    package_data={'cltl.commons.language_data': ["*.txt", "*.json"]},
     data_files=[('VERSION', ['VERSION'])],
     url="https://github.com/leolani/cltl-combot",
     license='MIT License',
