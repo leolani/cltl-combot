@@ -27,9 +27,13 @@ class DockerInfra:
 
         logger.info("Creating container from %s (boot time: %s)", self.image, self.boot_time)
 
-        for container in filter(lambda cont: cont.config.image == self.image, docker.ps()):
-            logger.info("Stopping container %s running image %s", container.name, self.image)
-            container.stop()
+        for container in docker.ps():
+            try:
+                if container.config.image == self.image:
+                    logger.info("Stopping container %s running image %s", container.name, self.image)
+                    container.stop()
+            except:
+                pass
 
         self.container = docker.run(image=self.image, detach=True, remove=True, publish=[(self.host_port, self.port)])
         self.wait_for_container_running(True)
