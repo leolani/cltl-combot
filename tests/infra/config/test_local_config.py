@@ -45,6 +45,7 @@ class ConfigurationManagerCase(unittest.TestCase):
         default_config = self.configuration_manager.get_config("section")
 
         self.assertIsNotNone(default_config)
+        self.assertTrue("name" in default_config)
         self.assertEqual("test section", default_config.get("name"))
         self.assertEqual(["val_1", "val_2"], default_config.get("values", multi=True))
         self.assertEqual(3, default_config.get_int("int"))

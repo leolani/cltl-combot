@@ -97,10 +97,10 @@ class LocalConfig(Configuration):
         return enum_vals if multi else enum_vals[0]
 
     def __contains__(self, key):
-        return self._parser.items(self._section).__contains__(key)
+        return self._parser.has_option(self._section, key)
 
     def __iter__(self):
-        return self._parser.items(self._section).__iter__()
+        return iter(self._parser.items(self._section))
 
     def __len__(self):
-        return self._parser.items(self._section).__len__()
+        return len(self._parser.items(self._section))
