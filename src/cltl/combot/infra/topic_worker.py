@@ -98,6 +98,11 @@ class TopicWorker(Thread):
         self._requires = requires
         self._provides = provides
 
+        if isinstance(intentions, str):
+            if ',' in intentions:
+                raise ValueError("Intentions should be a list, was " + intentions)
+            intentions = [intentions]
+
         self._intention_topic = intention_topic
         self._inactive_intentions = set(intention[1:] for intention in intentions if intention.startswith("!"))
         self._active_intentions = set(intention for intention in intentions if not intention.startswith("!"))
@@ -111,7 +116,8 @@ class TopicWorker(Thread):
         self._processor = processor
 
     def start(self):
-        logger.info("Starting topic worker %s", self.name)
+        logger.info("Starting topic worker %s for topics %s, intentions (active: %s, inactive: %s)",
+                    self.name, self._topics, self._active_intentions, self._inactive_intentions)
 
         super(TopicWorker, self).start()
 
