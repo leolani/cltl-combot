@@ -185,6 +185,7 @@ class GroupByProcessor:
         self._drop_expired_groups()
 
         key = self._get_key(event)
+        logger.debug("Processing group event %s with key %s", event.id, key)
         if key is None:
             return
 
@@ -197,6 +198,7 @@ class GroupByProcessor:
             self._group_processor.process_group(self._groups[key])
             self._completed.add(key)
             del self._groups[key]
+            logger.debug("Completed processing of group %s", key)
 
         self._truncate_buffers()
 
@@ -217,14 +219,17 @@ class GroupByProcessor:
             logger.exception("Received event for completed group %s: %s", key, event)
             key = None
         elif key in self._dropped:
+            logger.debug("Received event for completed group %s: %s", key, event)
             key = None
         elif len(self._groups) == self._max_size and key not in self._groups:
             if self._rejection_strategy == RejectionStrategy.DROP:
                 self._dropped.add(key)
+                logger.debug("Dropped group %s", key)
                 key = None
             elif self._rejection_strategy == RejectionStrategy.OVERWRITE:
                 dropped_key, _ = self._groups.popitem(last=False)
                 self._dropped.add(dropped_key)
+                logger.debug("Overwrote group %s", dropped_key)
             elif self._rejection_strategy == RejectionStrategy.EXCEPTION:
                 raise ValueError(f"Max size reached: {self._max_size}")
 
