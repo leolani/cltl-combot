@@ -140,6 +140,10 @@ class TopicWorker(Thread):
 
         self._stop_event.wait(_DEPENDENCY_TIMEOUT)
 
+    def clear(self):
+        with self._buffer.mutex:
+            self._buffer.queue.clear()
+
     def run(self):
         self.__resolve_dependencies()
         self._running = True
@@ -240,6 +244,7 @@ class TopicWorker(Thread):
                     # Ignore error if resource is already provided
                     pass
 
+    #TODO add a method to process events outside active intentions (e.g. scenario events)
     def process(self, event: Optional[Event]) -> None:
         """
         Process incoming events.
