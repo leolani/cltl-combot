@@ -52,7 +52,7 @@ Currently, the following components are implemented for the framework:
   Detects people and objects in images.
 * [Question processor](https://github.com/leolani/cltl-questionprocessor)
   Answers questions about the world through the Internet.
-* [Visual responder](https://github.com/leolani/ cltl-visualresponder)
+* [Visual responder](https://github.com/leolani/cltl-visualresponder)
   Answers questions to the visual context.
 
 To create a new component follow the instructions in the [template component](https://github.com/leolani/cltl-template).
