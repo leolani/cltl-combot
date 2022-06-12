@@ -12,6 +12,7 @@ Clone one of the application parents from this project space and follow the inst
 
 * [Eliza app](https://github.com/leolani/eliza-parent)
 * [Get to know you app](https://github.com/leolani/g2ky-parent)
+* [Leolan-mmai](https://github.com/leolani/leolani-mmai-parent)
 
 ## Components
 
@@ -35,6 +36,24 @@ Currently, the following components are implemented for the framework:
   Eliza based chat.
 * [Get To Know You (G2KY) chat](https://github.com/leolani/cltl-g2ky)  
   Establish name based on face recognition.
+* [About-agent](https://github.com/leolani/cltl-about-agent)
+  Answer questions about the agent itself.
+* [Knowledge extraction](https://github.com/leolani/cltl-knowledgeextraction)
+  Extracts factoid triples and perspectives from statements and gives back responses or it extracts SPARQL queries from questions and generates answers.
+* [Knowledge linking](https://github.com/leolani/cltl-knowledgelinking)
+  Resolves IRIs for mentions and perceptions of things and people such that triples are augmented with IRIs.
+* [Knowledge representation](https://github.com/leolani/cltl-knowledgerepresentation)
+  The models and functions to support the episodic Knowledge Graph.
+* [Language generation](https://github.com/leolani/cltl-languagegeneration)
+  Generates texts from triples.
+* [Mention detection](https://github.com/leolani/cltl-mention-detection)
+  Detects mentions of entities and visual objects in text.
+* [Object recognition](https://github.com/leolani/cltl-object-recognition)
+  Detects people and objects in images.
+* [Question processor](https://github.com/leolani/cltl-questionprocessor)
+  Answers questions about the world through the Internet.
+* [Visual responder](https://github.com/leolani/ cltl-visualresponder)
+  Answers questions to the visual context.
 
 To create a new component follow the instructions in the [template component](https://github.com/leolani/cltl-template).
 
