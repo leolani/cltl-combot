@@ -12,7 +12,7 @@ Clone one of the application parents from this project space and follow the inst
 
 * [Eliza app](https://github.com/leolani/eliza-parent)
 * [Get to know you app](https://github.com/leolani/g2ky-parent)
-* [Leolan-mmai](https://github.com/leolani/leolani-mmai-parent)
+* [Leolani-mmai](https://github.com/leolani/leolani-mmai-parent)
 
 ## Components
 
