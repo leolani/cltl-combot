@@ -30,6 +30,7 @@ class LeolaniContext(ScenarioContext):
     speaker: Agent
     location_id: str
     location: str
+    persons: List[Agent]
     objects: List[str]
 
 
