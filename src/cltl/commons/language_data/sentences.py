@@ -207,7 +207,7 @@ NO_ANSWER = [
     "I have no idea.",
     "I wouldn't know!",
     "I don't know",
-    "I may be ignorant, bu tI don't know."
+    "I may be ignorant, but I don't know."
     "I am sorry, I have no idea"
 ]
 
