@@ -39,7 +39,7 @@ def singleton_for_kw(keys):
                         create_instance = True
                 if create_instance:
                     instance = method(self, *args, **kwargs)
-                    if not instance:
+                    if instance is None:
                         raise ValueError("could not set " + singleton_attr)
                     DIContainer._singletons[singleton_attr] = instance
 
