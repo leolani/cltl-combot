@@ -445,7 +445,7 @@
         "past participle": "known"
         },
       "think": {
-        "certainty": "0.75",
+        "certainty": "0.65",
         "simple past": "thought",
         "past participle": "tought"
         },
@@ -768,6 +768,22 @@
       "gender": "neutral",
       "distance": "0"
     },
+    "husband":{
+      "gender": "male",
+      "distance": "0"
+    },
+    "wife":{
+      "gender": "female",
+      "distance": "0"
+    },
+    "spouse":{
+      "gender": "neutral",
+      "distance": "0"
+    },
+    "partner":{
+      "gender": "neutral",
+      "distance": "0"
+    },
     "parent": {
       "gender": "neutral",
       "distance": "1"
@@ -858,6 +874,7 @@
       "enjoys",
       "sees",
       "owns",
+      "marry-to",
       "can"
     ],
   "categories": [
@@ -866,5 +883,38 @@
       "friend",
       "food",
       "laptop"
+    ],
+    "activities": [
+      "theater",
+      "movie",
+      "cinema",
+      "concert",
+      "pub",
+      "bar",
+      "club",
+      "cafe",
+      "dance",
+      "dancing",
+      "disco",
+      "exhibition",
+      "museum",
+      "match",
+      "soccer",
+      "tennis",
+      "running",
+      "swimming",
+      "cycling",
+      "walking"
+    ],
+     "condition": [
+      "sad",
+      "happy",
+      "great",
+      "terrible",
+      "awful",
+      "sick",
+      "healthy",
+      "good",
+      "bad"
     ]
   }
