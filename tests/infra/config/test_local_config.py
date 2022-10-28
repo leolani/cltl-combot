@@ -65,3 +65,10 @@ class ConfigurationManagerCase(unittest.TestCase):
 
     def test_environment(self):
         self.assertEqual("test environment variable", os.environ['UNIT_TEST_VAR'])
+
+    def test_contains(self):
+        self.assertTrue(self.configuration_manager.has_config("section"))
+        self.assertTrue("section" in self.configuration_manager)
+
+        self.assertFalse(self.configuration_manager.has_config("not section"))
+        self.assertFalse("not section" in self.configuration_manager)

@@ -1,7 +1,7 @@
-import enum
+from enum import Enum, auto
 
 
-class Certainty(enum.Enum):
+class Certainty(Enum):
     UNDERSPECIFIED = 0
     POSSIBLE = 1
     PROBABLE = 2
@@ -42,7 +42,7 @@ class Certainty(enum.Enum):
             return Certainty.UNDERSPECIFIED
 
 
-class Polarity(enum.Enum):
+class Polarity(Enum):
     UNDERSPECIFIED = 0
     NEGATIVE = -1
     POSITIVE = 1
@@ -78,7 +78,7 @@ class Polarity(enum.Enum):
             return Polarity.UNDERSPECIFIED
 
 
-class Sentiment(enum.Enum):
+class Sentiment(Enum):
     UNDERSPECIFIED = 0
     NEGATIVE = -1
     POSITIVE = 1
@@ -117,7 +117,7 @@ class Sentiment(enum.Enum):
             return Sentiment.UNDERSPECIFIED
 
 
-class Emotion(enum.Enum):
+class Emotion(Enum):
     UNDERSPECIFIED = 0
     ANGER = 1
     DISGUST = 2
@@ -151,16 +151,18 @@ class Emotion(enum.Enum):
             return Emotion.UNDERSPECIFIED
 
 
-class Time(enum.Enum):
+class Time(Enum):
     UNDERSPECIFIED = 0
     PAST = 1
     PRESENT = 2
     FUTURE = 3
 
 
-class UtteranceType(str, enum.Enum):
-    STATEMENT = 0
-    QUESTION = 1
-    EXPERIENCE = 2
-    TEXT_MENTION = 3
-    IMAGE_MENTION = 4
+class UtteranceType(Enum):
+    STATEMENT = auto()
+    QUESTION = auto()
+    EXPERIENCE = auto()
+    TEXT_MENTION = auto()
+    IMAGE_MENTION = auto()
+    TEXT_ATTRIBUTION = auto()
+    IMAGE_ATTRIBUTION = auto()

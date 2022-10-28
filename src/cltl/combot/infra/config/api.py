@@ -43,6 +43,26 @@ class ConfigurationManager(object):
         """
         raise NotImplementedError()
 
+    def has_config(self, name):
+        # type: (str) -> bool
+        """
+        Test if a configuration with the specified name is available.
+
+        Parameters
+        ----------
+        name : str
+            The name identifying the configuration.
+
+        Returns
+        -------
+        bool
+            True if the configuration is present, False otherwise.
+        """
+        raise NotImplementedError()
+
+    def __contains__(self, key):
+        return self.has_config(key)
+
 
 class Configuration(object):
     def get(self, key, multi=False):

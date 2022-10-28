@@ -175,7 +175,7 @@ class TopicWorker(Thread):
             self.process(event)
             logger.debug("Processed event %s in %s ms for %s", event.id, timestamp_now() - start, self.name)
         except Empty:
-            if self._scheduled:
+            if self._scheduled and self._active:
                 self.process(None)
         except:
             logger.exception("Error during thread execution (%s)", self.name)
