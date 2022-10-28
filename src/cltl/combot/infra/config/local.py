@@ -59,13 +59,20 @@ class LocalConfigurationContainer(ConfigurationContainer):
 
 class LocalConfigurationManager(ConfigurationManager):
     def __init__(self, config):
+        # type: (ConfigParser) -> None
         self._config = config
+
+    def has_config(self, name):
+        return self._config.has_section(name)
 
     def get_config(self, name, callback=None):
         if callback:
             callback(LocalConfig(self._config, name))
 
         return LocalConfig(self._config, name)
+
+    def __contains__(self, key):
+        return self.has_config(key)
 
 
 class LocalConfig(Configuration):
