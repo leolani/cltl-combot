@@ -158,7 +158,7 @@ class Time(Enum):
     FUTURE = 3
 
 
-class UtteranceType(Enum):
+class UtteranceType(str, Enum):
     STATEMENT = auto()
     QUESTION = auto()
     EXPERIENCE = auto()
