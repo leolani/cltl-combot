@@ -766,103 +766,131 @@
   "kinship": {
     "friend":{
       "gender": "neutral",
-      "distance": "0"
+      "distance": "0",
+      "predicate": "be-friends-with"
     },
     "husband":{
       "gender": "male",
-      "distance": "0"
+      "distance": "0",
+      "predicate": "be-husband-of"
     },
     "wife":{
       "gender": "female",
-      "distance": "0"
+      "distance": "0",
+      "predicate": "be-wife-of"
     },
     "spouse":{
       "gender": "neutral",
-      "distance": "0"
+      "distance": "0",
+      "predicate": "be-spouse-of"
+
     },
     "partner":{
       "gender": "neutral",
-      "distance": "0"
+      "distance": "0",
+      "predicate": "be-partner-of"
     },
     "parent": {
       "gender": "neutral",
-      "distance": "1"
+      "distance": "1",
+      "predicate": "be-parent-of"
     },
     "child": {
       "gender": "neutral",
-      "distance": "1"
+      "distance": "1",
+      "predicate": "be-child-of"
     },
     "sibling": {
       "gender": "neutral",
-      "distance": "1"
+      "distance": "1",
+      "predicate": "be-sibling-of"
     },
     "grandparent": {
       "gender": "neutral",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-grandparent-of"
     },
     "grandchild": {
       "gender": "neutral",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-grandchild-of"
     },
     "mother": {
       "gender": "female",
-      "distance": "1"
+      "distance": "1",
+      "predicate": "be-mother-of"
+
     },
     "father": {
       "gender": "male",
-      "distance": "1"
+      "distance": "1",
+      "predicate": "be-father-of"
     },
     "brother": {
       "gender": "male",
-      "distance": "1"
+      "distance": "1",
+      "predicate": "be-brother-of"
+
     },
     "sister": {
       "gender": "female",
-      "distance": "1"
+      "distance": "1",
+      "predicate": "be-sister-of"
     },
     "daughter": {
       "gender": "female",
-      "distance": "1"
+      "distance": "1",
+      "predicate": "be-daughter-of"
     },
     "son": {
       "gender": "male",
-      "distance": "1"
+      "distance": "1",
+      "predicate": "be-son-of"
     },
     "uncle": {
       "gender": "male",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-uncle-of"
     },
     "aunt": {
       "gender": "female",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-aunt-of"
     },
     "nephew": {
       "gender": "male",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-nephew-of"
     },
     "niece": {
       "gender": "female",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-niece-of"
     },
     "cousin": {
       "gender": "neutral",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-cousin-of"
     },
     "grandmother": {
       "gender": "female",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-grandmother-of"
     },
     "grandfather": {
       "gender": "male",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-grandfather-of"
     },
     "grandson": {
       "gender": "male",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-grandson-of"
     },
     "granddaughter": {
       "gender": "female",
-      "distance": "2"
+      "distance": "2",
+      "predicate": "be-granddaugher-of"
     }
   },
   "predicates": [
@@ -872,7 +900,9 @@
       "lives",
       "loves",
       "enjoys",
+      "enjoyed",
       "sees",
+      "saw",
       "owns",
       "marry-to",
       "can"

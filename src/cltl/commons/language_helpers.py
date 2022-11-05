@@ -9,16 +9,21 @@ with importlib.resources.open_text("cltl.commons.language_data", "cfg.txt") as f
 
 def lexicon_lookup_subword(word, typ=None):
     words = word.split('-')
-    predicate = None
-    name = None
     for w in words:
         feature = lexicon_lookup(w, typ)
         if feature:
-            predicate = w
-            name = words[-1]
-            if name==predicate:
-                name = None
-    return predicate, name
+            predicate = feature["predicate"]
+            return predicate, w
+    return None, None
+
+def has_subword(word):
+    words = word.split('-')
+    predicate = None
+    name = None
+    for w in words:
+        if w==word:
+            return True
+    return False
 
 def lexicon_lookup(word, typ=None):
     """
