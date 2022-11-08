@@ -914,37 +914,107 @@
       "food",
       "laptop"
     ],
-    "activities": [
-      "theater",
-      "movie",
-      "cinema",
-      "concert",
-      "pub",
-      "bar",
-      "club",
-      "cafe",
-      "dance",
-      "dancing",
-      "disco",
-      "exhibition",
-      "museum",
-      "match",
-      "soccer",
-      "tennis",
-      "running",
-      "swimming",
-      "cycling",
-      "walking"
-    ],
-     "condition": [
-      "sad",
-      "happy",
-      "great",
-      "terrible",
-      "awful",
-      "sick",
-      "healthy",
-      "good",
-      "bad"
-    ]
+    "activities": {
+      "theater": {
+        "predicate": "activity"
+      },
+      "movie": {
+        "predicate": "activity"
+      },
+      "video": {
+        "predicate": "activity"
+      },
+      "cards": {
+        "predicate": "activity"
+      },
+      "cinema": {
+        "predicate": "activity"
+      },
+      "concert": {
+        "predicate": "activity"
+      },
+      "pub": {
+        "predicate": "activity"
+      },
+      "bar": {
+        "predicate": "activity"
+      },
+      "club": {
+        "predicate": "activity"
+      },
+      "cafe": {
+        "predicate": "activity"
+      },
+      "restaurant": {
+        "predicate": "activity"
+      },
+      "dance": {
+        "predicate": "activity"
+      },
+      "dancing": {
+        "predicate": "activity"
+      },
+      "disco": {
+        "predicate": "activity"
+      },
+      "exhibition": {
+        "predicate": "activity"
+      },
+      "museum": {
+        "predicate": "activity"
+      },
+      "match": {
+        "predicate": "activity"
+      },
+      "game": {
+        "predicate": "activity"
+      },
+      "soccer": {
+        "predicate": "activity"
+      },
+      "tennis": {
+        "predicate": "activity"
+      },
+      "running": {
+        "predicate": "activity"
+      },
+      "swimming": {
+        "predicate": "activity"
+      },
+      "cycling": {
+        "predicate": "activity"
+      },
+      "walking": {
+        "predicate": "activity"
+      }
+    },
+     "feelings": {
+       "sad": {
+         "predicate": "feel"
+       },
+       "happy": {
+         "predicate": "feel"
+       },
+       "great": {
+         "predicate": "feel"
+       },
+       "terrible": {
+         "predicate": "feel"
+       },
+       "awful": {
+         "predicate": "feel"
+       },
+       "sick": {
+         "predicate": "feel"
+       },
+       "healthy": {
+         "predicate": "feel"
+       },
+       "good": {
+         "predicate": "feel"
+       },
+       "bad": {
+         "predicate": "feel"
+       }
+     }
   }

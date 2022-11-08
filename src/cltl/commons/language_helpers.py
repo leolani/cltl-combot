@@ -8,13 +8,21 @@ with importlib.resources.open_text("cltl.commons.language_data", "cfg.txt") as f
     cfg = file.read()
 
 def lexicon_lookup_subword(word, typ=None):
-    words = word.split('-')
-    for w in words:
-        feature = lexicon_lookup(w, typ)
-        if feature:
-            predicate = feature["predicate"]
-            return predicate, w
-    return None, None
+    match_word  = ""
+    predicate = ""
+    feature = lexicon_lookup(word, typ)
+    if feature:
+        predicate = feature["predicate"]
+        match_word = word
+    else:
+        words = word.split('-')
+        for w in words:
+            feature = lexicon_lookup(w, typ)
+            if feature:
+                predicate = feature["predicate"]
+                match_word = w
+                break
+    return predicate, match_word
 
 def has_subword(word):
     words = word.split('-')
@@ -77,6 +85,10 @@ def lexicon_lookup(word, typ=None):
 
     # Define a kinship category.
     kinship = lexicon["kinship"]
+    # Define a activities category.
+    activities = lexicon["activities"]
+    # Define a kinship category.
+    feelings = lexicon["feelings"]
 
     if typ == 'verb':
         categories = [to_be,
@@ -110,6 +122,10 @@ def lexicon_lookup(word, typ=None):
         categories = [lexicals]
     elif typ == 'kinship':
         categories = [kinship]
+    elif typ == 'activities':
+        categories = [activities]
+    elif typ == 'feelings':
+        categories = [feelings]
     elif typ == 'det':
         categories = [articles, demonstratives, possessive_dets, possessive_pros, cardinals, ordinals]
     else:
@@ -137,7 +153,9 @@ def lexicon_lookup(word, typ=None):
                       coordinators,
                       subordinators,
                       question_words,
-                      kinship]
+                      kinship,
+                      activities,
+                      feelings]
 
     for category in categories:
         for item in category:
