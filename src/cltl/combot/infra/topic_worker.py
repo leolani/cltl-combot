@@ -181,6 +181,8 @@ class TopicWorker(Thread):
             logger.exception("Error during thread execution (%s)", self.name)
 
     def __accept_event(self, event):
+        start = timestamp_now()
+
         accept = self._check_intention(event)
         if not accept:
             return
@@ -190,7 +192,7 @@ class TopicWorker(Thread):
             try:
                 self._buffer.put(event, block=self._strategy == RejectionStrategy.BLOCK)
                 handled = True
-                logger.debug("Queued event %s for %s", event.id, self.name)
+                logger.debug("Queued event %s for %s (%s ms)", event.id, self.name, timestamp_now() - start)
             except Full as e:
                 if self._strategy == RejectionStrategy.EXCEPTION:
                     raise e
@@ -198,12 +200,13 @@ class TopicWorker(Thread):
                 if self._strategy == RejectionStrategy.OVERWRITE:
                     try:
                         dropped = self._buffer.get(block=False)
-                        logger.debug("Overwrote event %s with %s for %s", dropped.id, event.id, self.name)
+                        logger.debug("Overwrote event %s with %s for %s (%s ms)", dropped.id, event.id, self.name,
+                                     timestamp_now() - start)
                     except Empty:
                         pass
                 elif self._strategy == RejectionStrategy.DROP:
                     handled = True
-                    logger.debug("Dropped event %s for %s", event.id, self.name)
+                    logger.debug("Dropped event %s for %s (%s ms)", event.id, self.name, timestamp_now() - start)
                 else:
                     raise ValueError("Unknown strategy: " + str(self._strategy))
 
