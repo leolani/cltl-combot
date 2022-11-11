@@ -3,6 +3,7 @@ from threading import RLock
 
 from cltl.combot.infra.di_container import singleton
 from cltl.combot.infra.event.api import EventBusContainer, EventBus, Event
+from cltl.combot.infra.time_util import timestamp_now
 
 logger = logging.getLogger(__name__)
 
@@ -22,8 +23,12 @@ class SynchronousEventBus(EventBus):
         self._topic_lock = RLock()
 
     def publish(self, topic, event):
+        start = timestamp_now()
+
         for handler in self.__get_handlers(topic):
             handler(Event.with_topic(event, topic))
+
+        logger.debug("Published event %s in %s ms", event.id, timestamp_now() - start)
 
     def subscribe(self, topic, handler):
         with self._topic_lock:
