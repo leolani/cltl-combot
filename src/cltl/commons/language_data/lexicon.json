@@ -894,27 +894,96 @@
     }
   },
   "predicates": [
-      "likes",
-      "knows",
-      "is_from",
-      "lives",
-      "loves",
-      "enjoys",
-      "enjoyed",
-      "sees",
-      "saw",
-      "owns",
-      "marry-to",
+      "like",
+      "know",
+      "be-from",
+      "be-at",
+      "be-in",
+      "be-on",
+      "be-inside",
+      "live-in",
+      "love",
+      "enjoy",
+      "see",
+      "read",
+      "listen",
+      "watch",
+      "visit",
+      "play",
+      "sport",
+      "music",
+      "game",
+      "make",
+      "prepare",
+      "eat",
+      "drink",
+      "dinner",
+      "breakfast",
+      "lunch",
+      "own",
+      "married-to",
+      "clean",
+      "party",
+      "travel-to",
+      "visit",
+      "create",
+      "cook",
+      "perform",
+      "prepare-drink",
+      "program",
+      "write",
       "can"
     ],
+
   "categories": [
       "book",
       "movie",
       "friend",
       "food",
+      "drink",
       "laptop"
     ],
-    "activities": {
+
+  "containers": [
+    "airplane",
+    "backpack",
+    "bottle",
+    "bowl",
+    "bus",
+    "car",
+    "closet",
+    "drawer",
+    "glass",
+    "handbag",
+    "kettle",
+    "oven",
+    "plate",
+    "pot",
+    "refrigerator",
+    "ship",
+    "sink",
+    "spoon",
+    "suitcase",
+    "toaster",
+    "train",
+    "truck",
+    "vase,",
+    "building",
+    "bar,",
+    "cafe,",
+    "pub,",
+    "club",
+    "house",
+    "library",
+    "museum",
+    "office",
+    "pub",
+    "home",
+    "restaurant",
+    "house"
+    ],
+
+  "activities": {
       "theater": {
         "predicate": "activity"
       },
@@ -988,32 +1057,74 @@
         "predicate": "activity"
       }
     },
-     "feelings": {
+
+  "feelings": {
        "sad": {
+         "sentiment": "negative",
          "predicate": "feel"
        },
-       "happy": {
+       "excellent": {
+         "sentiment": "positive",
          "predicate": "feel"
        },
-       "great": {
-         "predicate": "feel"
-       },
-       "terrible": {
+       "fine": {
+         "sentiment": "positive",
          "predicate": "feel"
        },
        "awful": {
+         "sentiment": "negative",
+         "predicate": "feel"
+       },
+       "awesome": {
+         "sentiment": "positive",
+         "predicate": "feel"
+       },
+       "ok": {
+         "sentiment": "positive",
+         "predicate": "feel"
+       },
+      "fantastic": {
+         "sentiment": "positive",
+         "predicate": "feel"
+       },
+       "happy": {
+         "sentiment": "positive",
+         "predicate": "feel"
+       },
+       "great": {
+         "sentiment": "positive",
+         "predicate": "feel"
+       },
+       "terrible": {
+         "sentiment": "negative",
          "predicate": "feel"
        },
        "sick": {
+         "sentiment": "negative",
          "predicate": "feel"
        },
        "healthy": {
+         "sentiment": "positive",
+         "predicate": "feel"
+       },
+       "strong": {
+         "sentiment": "positive",
+         "predicate": "feel"
+       },
+       "weak": {
+         "sentiment": "negative",
+         "predicate": "feel"
+       },
+       "energetic": {
+         "sentiment": "positive",
          "predicate": "feel"
        },
        "good": {
+         "sentiment": "positive",
          "predicate": "feel"
        },
        "bad": {
+         "sentiment": "negative",
          "predicate": "feel"
        }
      }

@@ -24,10 +24,21 @@ def lexicon_lookup_subword(word, typ=None):
                 break
     return predicate, match_word
 
+def lexicon_lookup_subword_class(word, typ=None):
+    match_word  = ""
+
+    if word in lexicon[typ]:
+        match_word = word
+    else:
+        words = word.split('-')
+        for w in words:
+            if w in lexicon[typ]:
+                match_word = w
+                break
+    return match_word
+
 def has_subword(word):
     words = word.split('-')
-    predicate = None
-    name = None
     for w in words:
         if w==word:
             return True
