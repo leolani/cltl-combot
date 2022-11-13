@@ -41,7 +41,10 @@ class Event(Generic[T]):
         return cls(event.id, event.payload, EventMetadata.with_(event.metadata, topic=topic))
 
     def __eq__(self, other):
-        return self.id == other.id
+        return other and self.id == other.id
+
+    def __hash__(self):
+        return hash(self.id) if self.id else hash("")
 
 
 class EventBus:
