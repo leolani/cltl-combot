@@ -1069,76 +1069,76 @@
 
   "activities": {
       "theater": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "movie": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "video": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "cards": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "cinema": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "concert": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "pub": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "bar": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "club": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "cafe": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "restaurant": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "dance": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "dancing": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "disco": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "exhibition": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "museum": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "match": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "game": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "soccer": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "tennis": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "running": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "swimming": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "cycling": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       },
       "walking": {
-        "predicate": "activity"
+        "predicate": "do-activity"
       }
     },
 
