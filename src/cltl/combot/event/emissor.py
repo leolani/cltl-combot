@@ -20,7 +20,7 @@ class ConversationalAgent(Enum):
 
 @dataclass
 class Agent:
-    name: Optional[str] = "UNKNOWN"
+    name: Optional[str] = None
     uri: Optional[str] = None
 
 
