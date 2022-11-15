@@ -1074,6 +1074,9 @@
       "movie": {
         "predicate": "do-activity"
       },
+      "movies": {
+        "predicate": "do-activity"
+      },
       "video": {
         "predicate": "do-activity"
       },
@@ -1084,6 +1087,15 @@
         "predicate": "do-activity"
       },
       "concert": {
+        "predicate": "do-activity"
+      },
+      "show": {
+        "predicate": "do-activity"
+      },
+      "festival": {
+        "predicate": "do-activity"
+      },
+      "performance": {
         "predicate": "do-activity"
       },
       "pub": {
@@ -1126,6 +1138,9 @@
         "predicate": "do-activity"
       },
       "tennis": {
+        "predicate": "do-activity"
+      },
+      "dancing": {
         "predicate": "do-activity"
       },
       "running": {
