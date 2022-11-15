@@ -146,9 +146,47 @@ class Emotion(Enum):
         # elif isinstance(value, str) and value.isnumeric():
         #     return Emotion.from_float(float(value))
         elif isinstance(value, str):
+            if value.startswith("EmotionType.GO"):
+                return GoEmotion[value.split(':')[-1].upper()]
+            if value.startswith("EmotionType.EKMAN"):
+                return Emotion[value.split(':')[-1].upper()]
+            elif value.startswith("EmotionType.SENTIMENT"):
+                return Sentiment[value.split(':')[-1].upper()]
+
             return Emotion.from_str(value)
         else:
             return Emotion.UNDERSPECIFIED
+
+
+class GoEmotion(Enum):
+    AMUSEMENT = auto()
+    EXCITEMENT = auto()
+    JOY = auto()
+    LOVE = auto()
+    DESIRE = auto()
+    OPTIMISM = auto()
+    CARING = auto()
+    PRIDE = auto()
+    ADMIRATION = auto()
+    GRATITUDE = auto()
+    RELIEF = auto()
+    APPROVAL = auto()
+    FEAR = auto()
+    NERVOUSNESS = auto()
+    REMORSE = auto()
+    EMBARRASSMENT = auto()
+    DISAPPOINTMENT = auto()
+    SADNESS = auto()
+    GRIEF = auto()
+    DISGUST = auto()
+    ANGER = auto()
+    ANNOYANCE = auto()
+    DISAPPROVAL = auto()
+    REALIZATION = auto()
+    SURPRISE = auto()
+    CURIOSITY = auto()
+    CONFUSION = auto()
+    NEUTRAL = auto()
 
 
 class Time(Enum):
