@@ -168,10 +168,12 @@ class TopicWorker(Thread):
 
     def __process_event(self):
         try:
-            start = timestamp_now()
             block = self._interval == 0
             timeout = self._scheduled if self._scheduled else 1  # Never block forever
             event = self._buffer.get(block=block, timeout=timeout)
+
+            logger.debug("Processing event %s for %s", event.id, self.name)
+            start = timestamp_now()
             self.process(event)
             logger.debug("Processed event %s in %s ms for %s", event.id, timestamp_now() - start, self.name)
         except Empty:
