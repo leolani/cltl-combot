@@ -19,6 +19,20 @@ class DIContainer(object):
         cls._lock = Lock()
         cls._singletons = dict()
 
+    def start(self):
+        pass
+
+    def stop(self):
+        pass
+
+    def __enter__(self):
+        self.start()
+
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.stop()
+
 
 def singleton_for_kw(keys):
     """
