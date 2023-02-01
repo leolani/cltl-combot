@@ -2,6 +2,8 @@ import threading
 
 import logging
 from threading import Thread
+from typing import Any
+
 from time import sleep
 
 logger = logging.getLogger(__name__)
@@ -59,8 +61,8 @@ class Scheduler(Thread):
         logger.info("Stopped %s thread", self.name)
 
 
-class ThreadsafeBoolean:
-    def __init__(self, value: bool = False):
+class ThreadsafeValue:
+    def __init__(self, value: Any):
         self._value = value
         self._lock = threading.Lock()
 
@@ -70,12 +72,17 @@ class ThreadsafeBoolean:
             return self._value
 
     @value.setter
-    def value(self, value: bool):
+    def value(self, value: Any):
         with self._lock:
             self._value = value
 
-    def __bool__(self) -> bool:
-        return self.value
-
     def __str__(self) -> str:
         return str(self.value)
+
+
+class ThreadsafeBoolean(ThreadsafeValue):
+    def __init__(self, value: bool = False):
+        super().__init__(value)
+
+    def __bool__(self) -> bool:
+        return self.value
