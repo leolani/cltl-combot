@@ -83,9 +83,11 @@ class LocalConfig(Configuration):
 
     def get(self, key, multi=False):
         # TODO Python 3 Cast to string (instead of unicode string)
-        val = str(self._parser.get(self._section, key))
+        value = str(self._parser.get(self._section, key))
+        if not value:
+            return value if not multi else []
 
-        return val if not multi else [v.strip() for v in val.split(_DELIMITER)]
+        return value if not multi else [v.strip() for v in value.split(_DELIMITER)]
 
     def get_int(self, key):
         return self._parser.getint(self._section, key)
@@ -98,6 +100,9 @@ class LocalConfig(Configuration):
 
     def get_enum(self, key, type, multi=False):
         value = self.get(key, multi)
+        if not value:
+            return value if not multi else []
+
         string_values = value if multi else [value]
         enum_vals = [getattr(type, val.strip().upper()) for val in string_values]
 
