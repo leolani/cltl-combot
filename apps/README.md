@@ -33,7 +33,8 @@ A script should create a working directory that consists of the script name post
 
 ## Applications
 
-| Script name               | Description                               | Options                 | Infra     | Docker image          |
-|---------------------------|-------------------------------------------|-------------------------|-----------|-----------------------|
-| leolani_whisper_8eeab3.sh | Full Leolani application with Whisper ASR | - Backend IP (optional) | - GraphDB | numblr/leolani:8eeab3 | 
+| Script name               | Description                               | Options                 | Infra     | Docker image            |
+|---------------------------|-------------------------------------------|-------------------------|-----------|-------------------------|
+| leolani_whisper_8eeab3.sh | Full Leolani application with Whisper ASR | - Backend IP (optional) | - GraphDB | numblr/leolani:8eeab3   |
+| leolani_chatonly.sh       | Leolani application with Chat UI only     |                         | - GraphDB | numblr/leolani:chatonly |
 
