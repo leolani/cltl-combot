@@ -30,7 +30,7 @@ mkdir -p "$app_dir"
 cd "$app_dir"
 
 echo "Clean and setup directories"
-rm -r config
+rm -rf config
 
 mkdir -p config storage credentials
 mkdir -p storage/audio storage/image
@@ -139,7 +139,7 @@ EOF
 
 echo "Clean and setup run configuration"
 
-rm docker-compose.yml
+rm -f docker-compose.yml
 
 cat <<EOF > docker-compose.yml
 version: "3.9"
@@ -172,13 +172,6 @@ services:
 EOF
 
 
-echo "Setup venv for server"
-
-python -m venv venv
-source venv/bin/activate
-pip install "cltl-backend[host]"
-
-
 if [[ "$*" == *"."* ]]
 then
 echo "Configure IP $robot_ip"
@@ -196,6 +189,13 @@ remote_url: http://$robot_ip:8000
 EOF
 
 else
+
+echo "Setup venv for server"
+
+python -m venv venv
+source venv/bin/activate
+pip install "cltl-backend[host]"
+
 echo "Unset IP"
 
 cat <<EOF > config/cltl.backend
