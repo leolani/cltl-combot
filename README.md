@@ -65,21 +65,33 @@ Clone one of the above [applications](#Applications) and follow the instructions
 
 ### Prerequisites
 
+#### Homebrew
+
+[Homebrew](https://brew.sh/) is a useful package manager for Mac OS X, to install it follow the
+instructions on their homepage.
+
 #### Python
 
-Most of the repositories require at least Python 3.8.
+Most of the repositories require a Python version of *at least 3.8 and at most 3.10*.
+For the provided build tooling the `python` and `pip` command must be linked to an
+appropriate version, You can check the version and used installation with the
 
-One option to manage Python versions is to use
-[pyenv](https://github.com/pyenv/pyenv). Note, however, that `pyenv` doesn't
-work well together with anaconda. To detect if you are using anaconda, run
-`which python`. If you use anaconda, you can use that to manage your Python
-version.
+    python --version
+    which python
+
+commands. One option to manage Python versions is to use [pyenv](https://github.com/pyenv/pyenv).
+Note, however, that `pyenv` doesn't work well together with anaconda. To detect if you
+are using anaconda with the command above. If you use anaconda, you can use that to manage your Python
+version (?).
+
+*Note* that using an alias for the `python` command in the shell configuration script does not
+work as aliases are eventually not expanded if the shell is not in interactive mode.
 
 #### make
 
 To build the application, `make` is used.
 
-On OS X it is recommeded to upgrade `make`. Since OS X doesn't use standard GNU
+On OS X it is recommended to upgrade `make`. Since OS X doesn't use standard GNU
 utils due their restrictive licence, default `make` on OS X is way outdated.
 
 One option is to use homebrew:
@@ -94,7 +106,40 @@ to your `~/.zshrc`
 
 #### Docker
 
-To be added.
+[Docker](https://www.docker.com/) is a tool to run our applications or components in a
+containerized runtime environment. To install it follow the instructions on their homepage
+or use [Homebrew](https://formulae.brew.sh/cask/docker). *Note* that you need to use the
+`--cask` option with Homebrew!
+
+#### Graph DB
+
+Some components use GraphDB, to install it register on their
+[homepage](https://www.ontotext.com/products/graphdb/download) and follow the provided instructions. 
+
+#### C compiler
+
+Some dependencies require a C compiler to be installed. On Mac OS X you may need to install
+
+        sudo xcode-select —install
+
+If you encounter error messages regarding an invalid version of clang, you may need to reinstall
+by first running
+
+        sudo rm -rf /Library/Developer/CommandLineTools
+
+followed by the installation command above.
+
+#### Rust compiler
+
+Some dependencies require a Rust compiler to be installed, follow the instructions on their
+[homepage](https://www.rust-lang.org/tools/install) to install it.
+
+#### Portaudio
+
+Python audio libraries may need portaudio to be installed, on Mac OS X you can use
+[homebrew](https://formulae.brew.sh/formula/portaudio#default) to install it. To
+figure out specific instructions regarding your hardware a simple internet search should
+find you the answers.
 
 ## Development
 
