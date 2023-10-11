@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  leolani:
+    image: "numblr/leolani:latest"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./config:/cltl_k8_config
+      - ./credentials:/credentials
+      - ./storage:/leolani/cltl-leolani-app/py-app/storage
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - CLTL_LOGGING_CONFIG=/cltl_k8_config/.logging.config
+  face-recognition:
+    image: "tae898/face-detection-recognition:latest"
+    ports:
+      - "10002:10002"
+  object-recognition:
+    image: "tae898/yolov5:latest"
+    ports:
+      - "10004:10004"
+  age-recognition:
+    image: "tae898/age-gender:latest"
+    ports:
+      - "10003:10003"

@@ -159,7 +159,7 @@ version: "3.9"
 
 services:
   leolani:
-    image: "numblr/leolani:chatonly"
+    image: "numblr/leolani:latest"
     ports:
       - "8000:8000"
     volumes:
