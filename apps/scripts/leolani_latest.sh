@@ -200,8 +200,8 @@ echo "Unset IP"
 
 cat <<EOF > config/cltl.backend
 run_server: False
-server_image_url: http://host.docker.internal:8080/
-server_audio_url: http://host.docker.internal:8080/
+server_image_url: http://host.docker.internal:8080
+server_audio_url: http://host.docker.internal:8080
 EOF
 
 rm -f config/cltl.backend.text_output

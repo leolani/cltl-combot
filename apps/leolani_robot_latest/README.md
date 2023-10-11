@@ -84,7 +84,7 @@ Install
         pip install "cltl.backend[host]"
 
 1. Configure the microphone in _config/cltl.backend_:
-   * server_audio_url: http://host.docker.internal:8080/
+   * server_audio_url: http://host.docker.internal:8080
 
 #### Run the backend server
 
