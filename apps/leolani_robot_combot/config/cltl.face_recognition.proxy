@@ -1,0 +1,3 @@
+start_infra: False
+detector_url: http://face-recognition:10002/
+age_gender_url: http://age-recognition:10003/
