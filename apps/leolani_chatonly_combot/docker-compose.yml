@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   leolani:
-    image: "numblr/leolani:combot"
+    image: "numblr/leolani:combot2023"
     ports:
       - "8000:8000"
     volumes:
