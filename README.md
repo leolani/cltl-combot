@@ -141,6 +141,17 @@ Python audio libraries may need portaudio to be installed, on Mac OS X you can u
 figure out specific instructions regarding your hardware a simple internet search should
 find you the answers.
 
+#### libsndfile
+
+Also *libsndfile* may need to be installed on your system, on Mac OS X this can be done
+with homebrew:
+
+    brew install libsndfile
+
+It is possible thought that homebrew does not link the library properly, in this case follow
+the instructions in this [stackoverflow](https://stackoverflow.com/questions/67973223/cannot-import-soundfile-mac)
+post.
+
 ## Development
 
 To work on the development of a specific [application](#applications), start from the parent repository
