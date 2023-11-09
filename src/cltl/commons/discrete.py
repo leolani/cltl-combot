@@ -82,7 +82,9 @@ class Sentiment(Enum):
     UNDERSPECIFIED = 0
     NEGATIVE = -1
     POSITIVE = 1
-    NEUTRAL = 2
+    NEUTRAL = 0
+    EXTREME_NEG = -2
+    EXTREME_POS = 2
 
     @staticmethod
     def from_str(label):

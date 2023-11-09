@@ -8,11 +8,19 @@ def continuous_to_enum(enum_class, original_value):
     :param original_value: Continuous value to be transformed
     :return:
     """
+    if original_value < -2:
+        original_value = -2
+    elif original_value > 2:
+        original_value = 2
+    else:
+        original_value = round(original_value)
+
     try:
         new_value = enum_class(original_value)
 
     # The value given does not map exactly to a value in our enum, so we transform it
     except:
+
         mx = max([e.value for e in enum_class])
         mn = min([e.value for e in enum_class])
         range = mx - mn
