@@ -190,15 +190,17 @@ class GroupByProcessor:
             return
 
         if key not in self._groups:
+            logger.debug("Create group %s (current size: %s/%s)", key, len(self._groups), self._max_size)
             self._groups[key] = self._group_processor.new_group(key)
 
         self._groups[key].add(event)
 
         if self._groups[key].complete:
+            logger.debug("Start processing group %s", key)
             self._group_processor.process_group(self._groups[key])
             self._completed.add(key)
             del self._groups[key]
-            logger.debug("Completed processing of group %s", key)
+            logger.debug("Completed processing of group %s (current size: %s/%s)", key, len(self._groups), self._max_size)
 
         self._truncate_buffers()
 
@@ -216,22 +218,22 @@ class GroupByProcessor:
         key = self._group_processor.get_key(event)
 
         if key in self._completed:
-            logger.exception("Received event for completed group %s: %s", key, event)
+            logger.warning("Received event for completed group %s: %s", key, event)
             key = None
         elif key in self._dropped:
-            logger.debug("Received event for completed group %s: %s", key, event)
+            logger.warning("Received event for dropped group %s: %s", key, event)
             key = None
         elif len(self._groups) == self._max_size and key not in self._groups:
             if self._rejection_strategy == RejectionStrategy.DROP:
                 self._dropped.add(key)
-                logger.debug("Dropped group %s", key)
+                logger.warning("Dropped group %s", key, event)
                 key = None
             elif self._rejection_strategy == RejectionStrategy.OVERWRITE:
                 dropped_key, _ = self._groups.popitem(last=False)
                 self._dropped.add(dropped_key)
-                logger.debug("Overwrote group %s", dropped_key)
+                logger.warning("Overwrote group %s", dropped_key, event)
             elif self._rejection_strategy == RejectionStrategy.EXCEPTION:
-                raise ValueError(f"Max size reached: {self._max_size}")
+                raise ValueError(f"Max size reached: {self._max_size} for {event}")
 
         return key
 

@@ -44,13 +44,11 @@ def fix_nlp_types(types):
     -------
 
     """
+    if isinstance(types, str):
+        return [types.split('.')[-1]]
+
     fixed_types = []
     for el in types:
-        # this was just a char
-        if len(el) == 1:
-            fixed_types.append(types.split('.')[-1])
-            break
-
         # Preferential types
         if "ability" in el:
             fixed_types.append('ability')

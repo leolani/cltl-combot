@@ -5,6 +5,8 @@ import string
 def casefold_text(text, format='triple'):
     if not text:
         return None
+    if not isinstance(text, str):
+        return text
 
     if format == 'triple':
         if isinstance(text, str):
