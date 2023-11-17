@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 _DELIMITER = ","
 
 CONFIG = "config/default.config"
-ADDITIONAL_CONFIGS = ["config/pepper.config", "config/credentials.config"]
+ADDITIONAL_CONFIGS = ["config/custom.config", "config/credentials.config"]
 SECTION_ENVIRONMENT = "environment"
 
 
