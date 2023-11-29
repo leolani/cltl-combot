@@ -226,12 +226,12 @@ class GroupByProcessor:
         elif len(self._groups) == self._max_size and key not in self._groups:
             if self._rejection_strategy == RejectionStrategy.DROP:
                 self._dropped.add(key)
-                logger.warning("Dropped group %s", key, event)
+                logger.warning("Dropped group %s for event %s", key, event)
                 key = None
             elif self._rejection_strategy == RejectionStrategy.OVERWRITE:
                 dropped_key, _ = self._groups.popitem(last=False)
                 self._dropped.add(dropped_key)
-                logger.warning("Overwrote group %s", dropped_key, event)
+                logger.warning("Overwrote group %s for event %s", dropped_key, event)
             elif self._rejection_strategy == RejectionStrategy.EXCEPTION:
                 raise ValueError(f"Max size reached: {self._max_size} for {event}")
 
