@@ -178,9 +178,12 @@ Mac OS X the above can be installed with homebrew:
 
     brew install portaudio libsndfile ffmpeg
 
-It is possible thought that homebrew does not link the *libsndfile* properly, in this case follow
+It is possible though that homebrew does not link the *libsndfile* properly, in this case follow
 the instructions in this [stackoverflow](https://stackoverflow.com/questions/67973223/cannot-import-soundfile-mac) post
-and pay attention to the output of homebrew.
+and pay attention to the output of homebrew. A likely fix is to add the following line to your
+shell initialization script (`~/.zshrc`):
+
+    export DYLD_LIBRARY_PATH="/opt/homebrew/lib:$DYLD_LIBRARY_PATH"
 
 ##### Video
 
