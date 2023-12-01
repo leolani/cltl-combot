@@ -130,6 +130,16 @@ containerized runtime environment. To install it follow the instructions on thei
 or use [Homebrew](https://formulae.brew.sh/cask/docker). *Note* that you need to use the
 `--cask` option with Homebrew!
 
+#### Java
+
+To check if Java is installed on your system you can run
+
+    java --version
+
+in the command line. If this does not work, install Java, e.g. with
+
+    brew install openjdk
+
 #### Graph DB
 
 Some components use GraphDB, to install it register on their
@@ -166,7 +176,7 @@ Also *libsndfile* and *ffmpeg*  may need to be installed on your system.
 
 Mac OS X the above can be installed with homebrew:
 
-    brew install protaudio libsndfile ffmpeg
+    brew install portaudio libsndfile ffmpeg
 
 It is possible thought that homebrew does not link the *libsndfile* properly, in this case follow
 the instructions in this [stackoverflow](https://stackoverflow.com/questions/67973223/cannot-import-soundfile-mac) post
