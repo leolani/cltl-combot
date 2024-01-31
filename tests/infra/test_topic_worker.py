@@ -4,7 +4,7 @@ import threading
 import time
 import unittest
 
-from cltl.combot.event.bdi import IntentionEvent
+from cltl.combot.event.bdi import IntentionEvent, Intention
 from cltl.combot.infra.event.api import Event
 from cltl.combot.infra.event.memory import SynchronousEventBus
 from cltl.combot.infra.topic_worker import TopicWorker, RejectionStrategy
@@ -81,7 +81,7 @@ class TestTopicWorker(unittest.TestCase):
         self.assertEqual(0, len(self.processor.events))
 
         self.processor.processed.clear()
-        self.event_bus.publish("intentions", Event.for_payload(IntentionEvent(["testIntention"])))
+        self.event_bus.publish("intentions", Event.for_payload(IntentionEvent([Intention("testIntention", None)])))
         self.assertFalse(self.processor.processed.wait(0.1))
         self.assertEqual(0, len(self.processor.events))
 
@@ -93,7 +93,7 @@ class TestTopicWorker(unittest.TestCase):
         self.assertEqual(1, self.processor.events[0].payload)
 
         self.processor.processed.clear()
-        self.event_bus.publish("intentions", Event.for_payload(IntentionEvent(["otherIntention"])))
+        self.event_bus.publish("intentions", Event.for_payload(IntentionEvent([Intention("otherIntention", None)])))
         self.assertFalse(self.processor.processed.wait(0.1))
         self.assertEqual(1, len(self.processor.events))
 
@@ -117,7 +117,7 @@ class TestTopicWorker(unittest.TestCase):
         self.assertEqual(1, self.processor.events[0].payload)
 
         self.processor.processed.clear()
-        self.event_bus.publish("intentions", Event.for_payload(IntentionEvent(["testIntention"])))
+        self.event_bus.publish("intentions", Event.for_payload(IntentionEvent([Intention("testIntention", None)])))
         self.assertFalse(self.processor.processed.wait(0.1))
         self.assertEqual(1, len(self.processor.events))
 
@@ -128,7 +128,7 @@ class TestTopicWorker(unittest.TestCase):
         self.assertEqual(1, len(self.processor.events))
 
         self.processor.processed.clear()
-        self.event_bus.publish("intentions", Event.for_payload(IntentionEvent(["otherIntention"])))
+        self.event_bus.publish("intentions", Event.for_payload(IntentionEvent([Intention("otherIntention", None)])))
         self.assertFalse(self.processor.processed.wait(0.1))
         self.assertEqual(1, len(self.processor.events))
 

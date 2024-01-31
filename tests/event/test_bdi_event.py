@@ -1,6 +1,6 @@
 import unittest
 
-from cltl.combot.event.bdi import DesireEvent, IntentionEvent
+from cltl.combot.event.bdi import DesireEvent, IntentionEvent, Intention
 
 
 class BDIEventCase(unittest.TestCase):
@@ -13,7 +13,4 @@ class BDIEventCase(unittest.TestCase):
 
     def test_intention_from_string_raises_exception(self):
         with self.assertRaises(ValueError):
-            IntentionEvent("test")
-
-    def test_intention_from_tuple(self):
-        self.assertNotEqual(["test"], IntentionEvent(("test",)))
+            IntentionEvent(Intention("test", None))
