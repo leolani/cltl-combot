@@ -169,11 +169,13 @@ def lexicon_lookup(word, typ=None):
                       feelings]
 
     for category in categories:
-        for item in category:
-            if word == item:
-                if typ == 'category':
-                    return category, category[item]
-                return category[item]
+        if type(category)=='dict':
+            for item in category:
+                if word == item:
+                    if typ == 'category':
+                        return category, category[item]
+                    #print('category, item', category, item)
+                    return category[item]
     return None
 
 
