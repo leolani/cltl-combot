@@ -4,7 +4,8 @@ CLTL Leolani Combot provides the framework for applications that implement human
 
 ## About the Project
 
-This is the successor of the [Leolani platform](https://github.com/leolani/pepper) with an improved modular architecture.
+This is the successor of the [Leolani platform](https://github.com/leolani/pepper) with an improved modular
+architecture.
 
 ## Applications
 
@@ -31,7 +32,7 @@ Currently, the following components are implemented for the framework:
 * [Face Recognition](https://github.com/leolani/cltl-face-recognition)  
   Currently includes face detection, age-gender detection, face recognition
 * [Chat UI](https://github.com/leolani/cltl-chat-ui)  
-  Simple Chat client to display and interact with the conversation 
+  Simple Chat client to display and interact with the conversation
 * [Eliza chat](https://github.com/leolani/cltl-eliza)  
   Eliza based chat.
 * [Get To Know You (G2KY) chat](https://github.com/leolani/cltl-g2ky)  
@@ -39,7 +40,8 @@ Currently, the following components are implemented for the framework:
 * [About-agent](https://github.com/leolani/cltl-about-agent)
   Answer questions about the agent itself.
 * [Knowledge extraction](https://github.com/leolani/cltl-knowledgeextraction)
-  Extracts factoid triples and perspectives from statements and gives back responses or it extracts SPARQL queries from questions and generates answers.
+  Extracts factoid triples and perspectives from statements and gives back responses or it extracts SPARQL queries from
+  questions and generates answers.
 * [Knowledge linking](https://github.com/leolani/cltl-knowledgelinking)
   Resolves IRIs for mentions and perceptions of things and people such that triples are augmented with IRIs.
 * [Knowledge representation](https://github.com/leolani/cltl-knowledgerepresentation)
@@ -87,6 +89,23 @@ version (?).
 *Note* that using an alias for the `python` command in the shell configuration script does not
 work as aliases are eventually not expanded if the shell is not in interactive mode.
 
+##### Anaconda
+
+If you are using anaconda the installation of some of the dependencies with pip can cause
+issues. For this reason we recommend *not* to use anaconda to build and run the Leolanii
+platform. As mentioned above, anaconda does not work well together with _pyenv_ as both use
+the same mechanism to intercept the system PATH. If you are usually using anaconda to manage your
+Python version, one option is to set the system Python installation to a version compatible with
+Leolani and deactivate anaconda for the time working with Leolani. Note that anaconda typically
+activates the _base_ environment by default when starting an interactive shell.
+
+To set the system Python version with homebrew on Max OS X run
+
+    brew install python@3.10
+
+and follow the instructions in the output messages to prepend the PATH variable in your
+`~/.zshrc` file and add your modifications _before_ the anaconda setup in `~/.zshrc`.
+
 #### make
 
 To build the application, `make` is used.
@@ -95,7 +114,7 @@ On OS X it is recommended to upgrade `make`. Since OS X doesn't use standard GNU
 utils due their restrictive licence, default `make` on OS X is way outdated.
 
 One option is to use homebrew:
-    
+
     brew install make
 
 and add the installed `gmake` command by adding
@@ -111,10 +130,20 @@ containerized runtime environment. To install it follow the instructions on thei
 or use [Homebrew](https://formulae.brew.sh/cask/docker). *Note* that you need to use the
 `--cask` option with Homebrew!
 
+#### Java
+
+To check if Java is installed on your system you can run
+
+    java --version
+
+in the command line. If this does not work, install Java, e.g. with
+
+    brew install openjdk
+
 #### Graph DB
 
 Some components use GraphDB, to install it register on their
-[homepage](https://www.ontotext.com/products/graphdb/download) and follow the provided instructions. 
+[homepage](https://www.ontotext.com/products/graphdb/download) and follow the provided instructions.
 
 #### C compiler
 
@@ -134,29 +163,38 @@ followed by the installation command above.
 Some dependencies require a Rust compiler to be installed, follow the instructions on their
 [homepage](https://www.rust-lang.org/tools/install) to install it.
 
-#### Portaudio
+#### System libraries
+
+##### Audio
 
 Python audio libraries may need portaudio to be installed, on Mac OS X you can use
 [homebrew](https://formulae.brew.sh/formula/portaudio#default) to install it. To
 figure out specific instructions regarding your hardware a simple internet search should
 find you the answers.
 
-#### libsndfile
+Also *libsndfile* and *ffmpeg*  may need to be installed on your system.
 
-Also *libsndfile* may need to be installed on your system, on Mac OS X this can be done
-with homebrew:
+Mac OS X the above can be installed with homebrew:
 
-    brew install libsndfile
+    brew install portaudio libsndfile ffmpeg
 
-It is possible thought that homebrew does not link the library properly, in this case follow
-the instructions in this [stackoverflow](https://stackoverflow.com/questions/67973223/cannot-import-soundfile-mac)
-post.
+It is possible though that homebrew does not link the *libsndfile* properly, in this case follow
+the instructions in this [stackoverflow](https://stackoverflow.com/questions/67973223/cannot-import-soundfile-mac) post
+and pay attention to the output of homebrew. A likely fix is to add the following line to your
+shell initialization script (`~/.zshrc`):
+
+    export DYLD_LIBRARY_PATH="/opt/homebrew/lib:$DYLD_LIBRARY_PATH"
+
+##### Video
+
+Pillow eventually needs additional system libraries to be installed, check their
+[installation instructions](https://pillow.readthedocs.io/en/stable/installation.html#external-libraries)
+if you run into errors related to Pillow.
 
 ## Development
 
-To work on the development of a specific [application](#applications), start from the parent repository
-and follow the steps described below. The description uses the [Eliza app](https://github.com/leolani/eliza-parent)
-as example.
+To work on the development of a specific [application](#applications), start from the parent repository and follow the
+steps described below. The description uses the [Eliza app](https://github.com/leolani/eliza-parent) as example.
 
 ### Check-out
 
@@ -178,11 +216,11 @@ automate this process. To build the application run
     make build
 
 from the **parent repository**. This command will download external dependencies to
-[cltl-requirements](https://github.com/leolani/cltl-requirements), setup virtual environments for all components, package
-them and publish the packages to [cltl-requirements](https://github.com/leolani/cltl-requirements) to make them available
-to the application and other components.
+[cltl-requirements](https://github.com/leolani/cltl-requirements), setup virtual environments for all components,
+package them and publish the packages to [cltl-requirements](https://github.com/leolani/cltl-requirements) to make them
+available to the application and other components.
 
-To run the application follow the instructions in the [Eliza parent](https://github.com/leolani/eliza-parent).
+To run the application follow the instructions in the [Eliza qparent](https://github.com/leolani/eliza-parent).
 
 ### Make changes to the code
 
@@ -204,7 +242,6 @@ To add a new component to an application follow the instruction in the
 
 ### Create a new application
 
-
 ### HOWTOs
 
 * [Workflow using PyCharm](HOWTO/pycharm.md)
@@ -219,7 +256,7 @@ This repo provides infrastructre and general code for the platform:
 ### Infrastructure
 
 The `cltl.combot.infra` module contains library code for infrastructre used in
-the application. 
+qthe application.
 
 #### Event bus
 
@@ -234,7 +271,7 @@ implement the subscription to one or multiple topics in the event bus.
 
 Configuration is made available in the application via a configuration manager.
 The `cltl.combot.infra.config` module provides the interface and different
-implementations of the configuration manager. 
+implementations of the configuration manager.
 
 #### Resource manager
 
@@ -242,7 +279,7 @@ Access to resources in the application is made available via a resource manager.
 This includes providing resources and waiting for resources to become available
 as well as managing access to shared resources. The `cltl.combot.infra.resource`
 module provides the interface and different implementations of the resource
-manager. 
+manager.
 
 #### Time util
 
@@ -252,7 +289,7 @@ ease the usage of a consistent time format throughout the application.
 #### Dependency injection
 
 The `cltl.combot.infra.di_container` module provides a simple utility to use
-dependency inject in the application. 
+dependency inject in the application.
 
 ### Common libraries
 
@@ -264,7 +301,8 @@ The `cltl.combot.event` module contains common event payloads.
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any
+contributions you make are **greatly appreciated**.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -272,15 +310,17 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
 <!-- LICENSE -->
+
 ## License
 
-Distributed under the MIT License. See [`LICENSE`](https://github.com/leolani/cltl-combot/blob/main/LICENCE) for more information.
+Distributed under the MIT License. See [`LICENSE`](https://github.com/leolani/cltl-combot/blob/main/LICENCE) for more
+information.
 
 
 
 <!-- CONTACT -->
+
 ## Authors
 
 * [Taewoon Kim](https://tae898.github.io/)

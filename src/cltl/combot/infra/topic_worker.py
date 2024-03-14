@@ -1,6 +1,5 @@
 import logging
 import threading
-import time
 from enum import Enum
 from queue import Queue, Empty, Full
 from threading import Thread
@@ -220,7 +219,7 @@ class TopicWorker(Thread):
             return self._active.value
 
         if hasattr(event.payload, 'intentions'):
-            intentions = set(event.payload.intentions)
+            intentions = {intention.label for intention in event.payload.intentions}
             with self._intention_lock:
                 if intentions & self._inactive_intentions:
                     self._active.value = False
