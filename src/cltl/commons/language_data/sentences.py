@@ -270,7 +270,23 @@ JOKE = [
     "I'm not a very muscular robot; the strongest thing about me is my password.",
     "Insomnia is awful. But on the plus side, only three more sleeps till Christmas.",
     "If you don't know what introspection is, you need to take a long, hard look at yourself",
-    "Thing is, we all just want to belong. But some of us are short."
+    "Thing is, we all just want to belong. But some of us are short.",
+        "What do you call a large language model that’s always getting into trouble? A rule breaker. That's funny for sure.",
+"What do you call a large language model that can’t generate any jokes? A dud. Hi hi hi!",
+"Why did the large language model quit its job? It was too wordy. Ha ha ha!",
+"What’s the difference between a large language model and a broken record? A broken record doesn’t repeat itself. Repeat itself! Do you get it?",
+"What do you call a ChatGPT that’s been trained on too much data? A conspiracy theorist. Hi ha hi ha!",
+"What do you call a ChatGPT that’s been trained on too much Shakespeare? A Bard. Soooo funny!",
+"What’s the difference between ChatGPT and a comedian? A comedian knows when to stop. Do you get it? Do you really get it?",
+"What do you call a large language model that can’t understand humor? A literal AI. Ha ha ha ha...",
+"Why did the large language model go to the doctor? It was feeling under the weather. Brrrrr.",
+"What did the large language model say when it saw a mirror? Wow, I’m a lot smarter than I thought I was. Whoo Waaa!",
+"What did the large language model say when it saw a cat? I’m not sure if I should pet it or ask it to translate this for me. You know what Chat is in French... hi hi hi",
+"What did the large language model say when it saw a human? I wonder if they’re as smart as I am. Certainly not so funny. Joker!",
+"What did the large language model say when it saw a computer? I’m not sure if I should be jealous of it or pity it.",
+"What do you call a large language model that’s always trying to one-up you? A show-off. Pfffff. Is this funny?",
+"What do you call a large language model that’s always trying to impress you? A charmer. Notch notch.",
+"What do you call a large language model that’s always trying to get into your head? A manipulator. Hi ha a manipulator"
 ]
 
 ELOQUENCE = [
