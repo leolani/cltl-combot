@@ -91,7 +91,8 @@ class TopicWorker(Thread):
         self._topics = set(topics) if not isinstance(topics, str) else {topics}
         self._interval = interval
         self._scheduled = scheduled
-        self._buffer = Queue(maxsize=buffer_size)
+        self._buffer = Queue(maxsize=buffer_size) if buffer_size else Queue(maxsize=1)
+        self._no_buffer = buffer_size == 0
         self._strategy = rejection_strategy
         self._resource_manager = resource_manager
         self._requires = requires
@@ -175,6 +176,13 @@ class TopicWorker(Thread):
             start = timestamp_now()
             self.process(event)
             logger.debug("Processed event %s in %s ms for %s", event.id, timestamp_now() - start, self.name)
+
+            if self._no_buffer:
+                try:
+                    dropped = self._buffer.get(block=False)
+                    logger.debug("Dropped event %s while event processing for %s (no buffer)", dropped.id, self.name)
+                except Empty:
+                    pass
         except Empty:
             if self._scheduled and self._active:
                 self.process(None)
