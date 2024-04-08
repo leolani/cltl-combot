@@ -83,8 +83,16 @@ appropriate version, You can check the version and used installation with the
 
 commands. One option to manage Python versions is to use [pyenv](https://github.com/pyenv/pyenv).
 Note, however, that `pyenv` doesn't work well together with anaconda. To detect if you
-are using anaconda with the command above. If you use anaconda, you can use that to manage your Python
-version (?).
+are using anaconda use the command above.
+On OS X you can alternatively you install specific Python version using homebrew by installing
+
+    brew install python@3.10
+
+and adding it to your PATH variable, like
+
+    export PATH="$(brew --prefix)/opt/python@3.10/libexec/bin:$PATH"
+
+in `~/.zshrc` (see also their [their documentation](https://docs.brew.sh/Homebrew-and-Python)).
 
 *Note* that using an alias for the `python` command in the shell configuration script does not
 work as aliases are eventually not expanded if the shell is not in interactive mode.
