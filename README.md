@@ -195,8 +195,8 @@ shell initialization script (`~/.zshrc`):
 
 ##### Video
 
-Pillow eventually needs additional system libraries to be installed, check their
-[installation instructions](https://pillow.readthedocs.io/en/stable/installation.html#external-libraries)
+Pillow eventually needs additional system libraries to be installed, check the *External Libraries* section in their
+[installation instructions](https://pillow.readthedocs.io/en/stable/installation/building-from-source.html#external-libraries)
 if you run into errors related to Pillow.
 
 ## Development
