@@ -1,6 +1,6 @@
 NOT_TO_MENTION_TYPES = ['instance', "article", "prep", "numeral", "adv", "noun"]
 
-
+from cltl.commons.discrete import Sentiment
 def continuous_to_enum(enum_class, original_value):
     """
     Transform a continuous value to discrete
@@ -20,11 +20,15 @@ def continuous_to_enum(enum_class, original_value):
 
     # The value given does not map exactly to a value in our enum, so we transform it
     except:
+        # Take care of starnge range in sentiment
+        if enum_class == Sentiment:
+            closest = -1 if original_value < 0 else 1
 
-        mx = max([e.value for e in enum_class])
-        mn = min([e.value for e in enum_class])
-        range = mx - mn
-        closest = round(range * original_value)
+        else:
+            mx = max([e.value for e in enum_class])
+            mn = min([e.value for e in enum_class])
+            range = mx - mn
+            closest = round(range * original_value)
 
         new_value = enum_class(closest)
 
@@ -49,6 +53,11 @@ def fix_nlp_types(types):
 
     fixed_types = []
     for el in types:
+        # this was just a char
+        if len(el) == 1:
+            fixed_types.append(types.split('.')[-1])
+            break
+
         # Preferential types
         if "ability" in el:
             fixed_types.append('ability')

@@ -96,7 +96,7 @@ def lexicon_lookup(word, typ=None):
 
     # Define a kinship category.
     kinship = lexicon["kinship"]
-    # Define a activities category.
+    # Define an activities category.
     activities = lexicon["activities"]
     # Define a kinship category.
     feelings = lexicon["feelings"]
