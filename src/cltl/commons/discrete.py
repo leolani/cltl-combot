@@ -202,6 +202,7 @@ class UtteranceType(str, Enum):
     STATEMENT = auto()
     QUESTION = auto()
     EXPERIENCE = auto()
+    EXPERIENCE_TRIPLE = auto()
     TEXT_MENTION = auto()
     IMAGE_MENTION = auto()
     TEXT_ATTRIBUTION = auto()
