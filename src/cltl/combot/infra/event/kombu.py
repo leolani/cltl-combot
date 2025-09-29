@@ -15,16 +15,59 @@ from cltl.combot.infra.event import EventBusContainer, EventBus, Event
 
 logger = logging.getLogger(__name__)
 
+# Module-level variables for serialization functions (can be pickled)
+_current_serializer_func = None
+_current_deserializer_func = None
+
+def _serialize_with_custom_func(obj):
+    """Pickleable wrapper for custom serializer"""
+    if _current_serializer_func:
+        return json.dumps(obj, default=_current_serializer_func)
+    else:
+        return json.dumps(obj, default=vars)
+
+def _deserialize_with_custom_func(data):
+    """Pickleable wrapper for custom deserializer"""
+    if _current_deserializer_func:
+        return json.loads(data, object_hook=_current_deserializer_func)
+    else:
+        return json.loads(data, object_hook=lambda d: SimpleNamespace(**d))
+
 
 class KombuEventBusContainer(EventBusContainer, ConfigurationContainer):
     logger.info("Initialized KombuEventBusContainer")
 
     @property
     @singleton
+    def event_bus_serializer(self):
+        """Return a serialization and deserialization function.
+
+        serializer – A function that will be passed a python data structure and should return a string representing the
+        serialized data.
+        deserializer – A method that will be passed a string representing serialized data and should return a python
+        data structure.
+
+        Returns
+        -------
+        Any, Any
+            A serialization and deserialization function.
+        """
+        return None, None
+
+    @property
+    @singleton
     def event_bus(self):
+        global _current_serializer_func, _current_deserializer_func
+
+        serializer_func, deserializer_func = self.event_bus_serializer
+
+        # Set module-level variables for the pickleable wrapper functions to use
+        _current_serializer_func = serializer_func if serializer_func is not None else vars
+        _current_deserializer_func = deserializer_func if deserializer_func is not None else lambda d: SimpleNamespace(**d)
+
         register('cltl-json',
-                 lambda x: json.dumps(x, default=vars),
-                 lambda x: json.loads(x, object_hook=lambda d: SimpleNamespace(**d)),
+                 _serialize_with_custom_func,
+                 _deserialize_with_custom_func,
                  content_type='application/json',
                  content_encoding='utf-8')
 
@@ -91,7 +134,7 @@ class KombuEventBus(EventBus):
                 return
             elif handler:
                 try:
-                    self._handlers[topic] = tuple(h for h in self._handlers if h is not handler)
+                    self._handlers[topic] = tuple(h for h in self._handlers[topic] if h is not handler)
                     if len(self._handlers[topic]) == 0:
                         self._stop_consumer(topic)
                         logger.debug("Stopped EventBusConsumer for topic %s", topic)
@@ -107,6 +150,13 @@ class KombuEventBus(EventBus):
         self._consumers[topic].join()
         del self._consumers[topic]
         del self._handlers[topic]
+
+    def close(self):
+        """Clean up all consumers and close connections"""
+        with self._topic_lock:
+            for topic in list(self._consumers.keys()):
+                self._stop_consumer(topic)
+            self.connection.close()
 
     @property
     def topics(self):

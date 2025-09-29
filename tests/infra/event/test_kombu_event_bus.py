@@ -11,7 +11,7 @@ import unittest
 
 from cltl.combot.infra.config import ConfigurationManager
 from cltl.combot.infra.event.api import Event, EventMetadata
-from cltl.combot.infra.event.kombu import KombuEventBus
+from cltl.combot.infra.event.kombu import KombuEventBus, KombuEventBusContainer
 from cltl.combot.test.util import await_predicate
 
 logger = logging.getLogger()
@@ -139,6 +139,86 @@ class KombuEventBusTestCase(unittest.TestCase):
 
         self.assertEqual(len(actual_events), 1)
         self.assertEqual(actual_events[0], event)
+
+
+class KombuEventBusContainerTestCase(unittest.TestCase):
+    """Test custom serializer functionality in KombuEventBusContainer"""
+
+    def test_custom_serializer_integration(self):
+        """Test that custom serializer and deserializer are properly used"""
+
+        def custom_serializer(obj):
+            """Custom serializer that adds a test marker"""
+            if hasattr(obj, '__dict__'):
+                result = dict(obj.__dict__)
+                result['_test_serializer_used'] = True
+                return result
+            else:
+                return {'value': obj, '_test_serializer_used': True}
+
+        def custom_deserializer(d):
+            """Custom deserializer that creates SimpleNamespace objects"""
+            if isinstance(d, dict):
+                return SimpleNamespace(**d)
+            return d
+
+        class TestEventBusContainer(KombuEventBusContainer):
+            def __init__(self):
+                # Mock config manager for test
+                self._config_manager = mock.create_autospec(ConfigurationManager)
+                self._config_manager.get_config.return_value = {
+                    "server": "memory:///",
+                    "exchange": "test.exchange",
+                    "type": "direct",
+                    "compression": "bzip2",
+                }
+
+            @property
+            def config_manager(self):
+                return self._config_manager
+
+            @property
+            def event_bus_serializer(self):
+                return (custom_serializer, custom_deserializer)
+
+        # Test container creation and event bus initialization
+        container = TestEventBusContainer()
+        event_bus = container.event_bus
+
+        self.assertIsNotNone(event_bus)
+        self.assertIsInstance(event_bus, KombuEventBus)
+
+        # Test that we can publish and receive events with custom serialization
+        actual_events = []
+
+        def handler(event):
+            actual_events.append(event)
+
+        test_payload = SimpleNamespace(name="test_object", value=42)
+        test_event = Event.for_payload(test_payload)
+        topic = "test.custom.serializer"
+
+        event_bus.subscribe(topic, handler)
+        event_bus.publish(topic, test_event)
+
+        # Wait for event to be processed
+        await_predicate(lambda: len(actual_events) > 0, "custom serializer event received")
+
+        # Verify event was received
+        self.assertEqual(1, len(actual_events))
+        received_event = actual_events[0]
+
+        # Verify the payload was properly deserialized
+        self.assertIsInstance(received_event.payload, SimpleNamespace)
+        self.assertEqual(received_event.payload.name, "test_object")
+        self.assertEqual(received_event.payload.value, 42)
+
+        # Verify our custom serializer was used (marker should be present)
+        self.assertTrue(hasattr(received_event.payload, '_test_serializer_used'))
+        self.assertTrue(received_event.payload._test_serializer_used)
+
+        # Clean up
+        event_bus.unsubscribe(topic)
 
 
 if __name__ == '__main__':
