@@ -15,14 +15,16 @@ class EventMetadata:
     timestamp: int = timestamp_now()
     offset: int = -1
     topic: str = ""
+    scenario_id: Optional[str] = None
 
     @classmethod
-    def with_(cls, metadata, timestamp: int = None, offset: int = None, topic: str = None) -> Optional["EventMetadata"]:
+    def with_(cls, metadata, timestamp: int = None, offset: int = None, topic: str = None, scenario_id: str = None) -> Optional["EventMetadata"]:
         new_timestamp = timestamp if timestamp is not None else metadata.timestamp
         new_offset = offset if offset is not None else metadata.offset
         new_topic = topic if topic is not None else metadata.topic
+        new_scenario_id = scenario_id if scenario_id is not None else metadata.scenario_id
 
-        return cls(new_timestamp, new_offset, new_topic)
+        return cls(new_timestamp, new_offset, new_topic, new_scenario_id)
 
 
 T = TypeVar("T")
@@ -39,6 +41,10 @@ class Event(Generic[T]):
     @classmethod
     def with_topic(cls, event, topic: str) -> Optional["Event"]:
         return cls(event.id, event.payload, EventMetadata.with_(event.metadata, topic=topic))
+
+    @classmethod
+    def with_scenario(cls, event, scenario_id: str) -> Optional["Event"]:
+        return cls(event.id, event.payload, EventMetadata.with_(event.metadata, scenario_id=scenario_id))
 
     def __eq__(self, other):
         return other and self.id == other.id
