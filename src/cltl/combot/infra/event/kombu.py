@@ -55,8 +55,12 @@ class KombuEventBusContainer(EventBusContainer, ConfigurationContainer):
         return None, None
 
     @property
-    @singleton
     def event_bus(self):
+        return self.kombu_event_bus
+
+    @property
+    @singleton
+    def kombu_event_bus(self):
         global _current_serializer_func, _current_deserializer_func
 
         serializer_func, deserializer_func = self.event_bus_serializer
