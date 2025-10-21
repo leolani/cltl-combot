@@ -8,7 +8,7 @@ def event_payload_handler(handler):
     return wrapped
 
 
-def extract_scenario_id(event) -> Optional[str]:
+def extract_scenario_id(event, on_missing: str = 'raise') -> Optional[str]:
     """
     Extract scenario_id from an event.
 
@@ -16,6 +16,19 @@ def extract_scenario_id(event) -> Optional[str]:
     If not present, attempts to extract it from common payload structures:
     - Signal events: signal.time.container_id
     - Scenario events: scenario.id
+
+    Parameters
+    ----------
+    event: Event
+        Event to extract scenario_id from
+    on_missing: str
+        If 'raise' (default), raise an exception if an event is missing a scenario_id.
+        Else returns None if the scenario.id is missing.
+
+    Returns
+    -------
+    Optional[str]
+        the scenario_id
 
     Returns None if scenario_id cannot be determined.
     """
@@ -27,5 +40,8 @@ def extract_scenario_id(event) -> Optional[str]:
 
     if hasattr(event.payload, 'scenario') and hasattr(event.payload.scenario, 'id'):
         return event.payload.scenario.id
+
+    if on_missing == 'raise':
+        raise ValueError('Missing scenario id in event: {}'.format(event))
 
     return None
