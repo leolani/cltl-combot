@@ -1,6 +1,7 @@
 import logging
 import os
-from configparser import ConfigParser
+from configparser import ConfigParser, BasicInterpolation
+from string import Template
 
 from cltl.combot.infra.di_container import singleton
 from cltl.combot.infra.config.api import Configuration, ConfigurationManager, ConfigurationContainer
@@ -15,8 +16,43 @@ ADDITIONAL_CONFIGS = ["config/custom.config", "config/credentials.config"]
 SECTION_ENVIRONMENT = "environment"
 
 
+class EnvInterpolation(BasicInterpolation):
+    """Interpolation which expands environment variables in values.
+
+    Supports both $VAR and ${VAR} syntax. Environment variables are expanded
+    before standard ConfigParser interpolation (%(var)s).
+
+    Use $$ to escape a literal $ sign.
+
+    Examples:
+        [database]
+        host: $DB_HOST
+        port: ${DB_PORT}
+        url: %(host)s:%(port)s  # Combined with standard interpolation
+
+        [pricing]
+        currency: $$USD         # Becomes: $USD (literal)
+
+    Warns when environment variables remain unexpanded (not set).
+    """
+
+    def before_read(self, parser, section, option, value):
+        original_value = value
+        template = Template(value)
+        value = template.safe_substitute(os.environ)
+
+        # Warn if variable wasn't expanded (value unchanged, not escaped with $$)
+        if '$' in original_value and value == original_value and '$$' not in original_value:
+            logger.warning(
+                "Unexpanded environment variable in [%s].%s: %s",
+                section, option, value
+            )
+
+        return super().before_read(parser, section, option, value)
+
+
 def load_configuration(config_file=CONFIG, additional_config_files=ADDITIONAL_CONFIGS):
-    config = ConfigParser({}, strict=False)
+    config = ConfigParser({}, strict=False, interpolation=EnvInterpolation())
     if config_file:
         with open(config_file, 'r') as cfg:
             config.read_file(cfg)
