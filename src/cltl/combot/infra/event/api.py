@@ -1,5 +1,5 @@
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import TypeVar, Generic, Optional, Iterable, Callable
 
 from cltl.combot.infra.di_container import DIContainer
@@ -12,7 +12,7 @@ class TopicError(ValueError):
 
 @dataclass
 class EventMetadata:
-    timestamp: int = timestamp_now()
+    timestamp: int = field(default_factory=timestamp_now)
     offset: int = -1
     topic: str = ""
     scenario_id: Optional[str] = None
@@ -32,7 +32,7 @@ T = TypeVar("T")
 class Event(Generic[T]):
     id: str
     payload: T
-    metadata: EventMetadata = EventMetadata()
+    metadata: EventMetadata = field(default_factory=EventMetadata)
 
     @classmethod
     def for_payload(cls, payload: T, scenario_id: str = None) -> Optional["Event"]:
@@ -42,10 +42,16 @@ class Event(Generic[T]):
 
     @classmethod
     def with_topic(cls, event, topic: str) -> Optional["Event"]:
+        if hasattr(event, 'topic') and event.topic == topic:
+            return event
+
         return cls(event.id, event.payload, EventMetadata.with_(event.metadata, topic=topic))
 
     @classmethod
     def with_scenario(cls, event, scenario_id: str) -> Optional["Event"]:
+        if hasattr(event, 'scenario_id') and event.scenario_id == scenario_id:
+            return event
+
         return cls(event.id, event.payload, EventMetadata.with_(event.metadata, scenario_id=scenario_id))
 
     def __eq__(self, other):

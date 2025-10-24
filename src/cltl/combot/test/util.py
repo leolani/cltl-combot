@@ -27,7 +27,7 @@ class TestConfiguration(Configuration):
 
 
 def await_predicate(predicate: Callable[[Any], bool], msg: str = "predicate", repeat: int = 1000,
-                    sleep_interval: float = 0.01) -> None:
+                    sleep_interval: float = 0.01) -> bool:
     cnt = 0
     while not predicate() and cnt < repeat:
         sleep(sleep_interval)
@@ -35,3 +35,5 @@ def await_predicate(predicate: Callable[[Any], bool], msg: str = "predicate", re
 
     if cnt == repeat:
         raise TestCase.failureException("Test timed out waiting for " + msg)
+
+    return True

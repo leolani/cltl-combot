@@ -11,7 +11,7 @@ from kombu.serialization import register
 
 from cltl.combot.infra.di_container import singleton
 from cltl.combot.infra.config import ConfigurationManager, ConfigurationContainer
-from cltl.combot.infra.event import EventBusContainer, EventBus, Event
+from cltl.combot.infra.event.api import EventBusContainer, EventBus, Event
 
 logger = logging.getLogger(__name__)
 
@@ -123,8 +123,11 @@ class KombuEventBus(EventBus):
     def _topic_handler(self, topic: str):
         def handler(event):
             if topic in self._handlers:
-                for handl in self._handlers[topic]:
-                    handl(Event.with_topic(event, topic))
+                for h in self._handlers[topic]:
+                    try:
+                        h(Event.with_topic(event, topic))
+                    except Exception:
+                        logger.exception("Handler %s failed on topic %s", _format_name(h), topic)
 
         return handler
 
