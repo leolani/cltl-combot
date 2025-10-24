@@ -1,5 +1,7 @@
 from typing import Optional
 
+from cltl.combot.infra.event import Event
+
 
 def event_payload_handler(handler):
     def wrapped(self, event):
@@ -8,7 +10,7 @@ def event_payload_handler(handler):
     return wrapped
 
 
-def extract_scenario_id(event, on_missing: str = 'raise') -> Optional[str]:
+def extract_scenario_id(event: Event, on_missing: str = 'raise') -> Optional[str]:
     """
     Extract scenario_id from an event.
 

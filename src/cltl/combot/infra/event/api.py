@@ -38,7 +38,7 @@ class Event(Generic[T]):
     def for_payload(cls, payload: T, scenario_id: str = None) -> Optional["Event"]:
         event = cls(str(uuid.uuid4()), payload)
 
-        return event.with_scenario_id(scenario_id) if scenario_id else event
+        return Event.with_scenario(event, scenario_id) if scenario_id else event
 
     @classmethod
     def with_topic(cls, event, topic: str) -> Optional["Event"]:
