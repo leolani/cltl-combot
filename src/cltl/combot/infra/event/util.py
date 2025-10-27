@@ -34,7 +34,7 @@ def extract_scenario_id(event: Event, on_missing: str = 'raise') -> Optional[str
 
     Returns None if scenario_id cannot be determined.
     """
-    if event.metadata.scenario_id:
+    if hasattr(event.metadata, 'scenario_id') and event.metadata.scenario_id:
         return event.metadata.scenario_id
 
     if hasattr(event.payload, 'signal') and hasattr(event.payload.signal, 'time'):

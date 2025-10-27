@@ -79,20 +79,29 @@ class KombuEventBus(EventBus):
         config = config_manager.get_config("cltl.event.kombu")
         server = config.get('server')
         exchange = config.get('exchange')
-        exchange_type = config.get('type')
         self._compression = config.get('compression')
         self._serializer = serializer
 
         self._topic_lock = RLock()
         self.connection = Connection(server)
-        self.exchange = Exchange(exchange, type=exchange_type)
+        self.exchange = Exchange(exchange, type="topic")
+
+        self._tenant = config.get('tenant') if 'tenant' in config else None
 
         self._producer_topics: Set[str] = set()
         self._consumers: Dict[str, _EventBusConsumer] = {}
         self._handlers: Dict[str, Tuple[Callable, ...]] = {}
 
     def publish(self, topic: str, event: Event) -> None:
-        self._producer_topics.add(topic)
+        if self._tenant and event.metadata.tenant and self._tenant != event.metadata.tenant:
+            raise ValueError(f"Tenants don't match: {self._tenant} and {event.metadata}")
+
+        if self._tenant and not event.metadata.tenant:
+            event = Event.with_tenant(event, self._tenant)
+
+        full_topic = f"{topic}.{self._tenant}" if self._tenant else topic
+
+        self._producer_topics.add(full_topic)
 
         with connections[self.connection].acquire(block=True) as connection:
             with producers[connection].acquire(block=True) as producer:
@@ -101,15 +110,15 @@ class KombuEventBus(EventBus):
                                  compression=self._compression,
                                  exchange=self.exchange,
                                  declare=[self.exchange],
-                                 routing_key=topic)
+                                 routing_key=full_topic)
 
-    def subscribe(self, topic, handler: Callable[[Event], None]) -> None:
+    def subscribe(self, topic: str, handler: Callable[[Event], None]) -> None:
         with self._topic_lock:
             start_consumer = False
             if topic not in self._consumers:
                 self._handlers[topic] = ()
                 consumer = _EventBusConsumer(self.connection, self.exchange, self._serializer,
-                                             topic, self._topic_handler(topic))
+                                             topic, self._tenant, self._topic_handler(topic))
                 self._consumers[topic] = consumer
                 start_consumer = True
 
@@ -167,13 +176,16 @@ class KombuEventBus(EventBus):
 
 
 class _EventBusConsumer(ConsumerMixin, Thread):
-    def __init__(self, connection, exchange, serializer, topic, callback):
+    def __init__(self, connection, exchange, serializer, topic, tenant, callback):
         super().__init__(name=f"EventBusConsumer-{topic}-{_format_name(callback)}" + topic)
         self.connection = connection
         self.serializer = serializer
         self.topic = topic
         self.callback = callback
-        self.queue = Queue(topic, exchange, routing_key=topic)
+
+        full_topic = f"{topic}.{tenant}" if tenant else topic
+        routing = f"{topic}.{tenant}" if tenant else f"{topic}.#"
+        self.queue = Queue(full_topic, exchange, routing_key=routing)
 
     def get_consumers(self, Consumer, channel):
         return [Consumer([self.queue], accept=[self.serializer], callbacks=[self.on_message])]
