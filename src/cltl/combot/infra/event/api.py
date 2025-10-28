@@ -16,27 +16,34 @@ class EventMetadata:
     offset: int = -1
     topic: str = ""
     tenant: Optional[str] = None
+    scenario_id: Optional[str] = None
 
     @classmethod
     def with_(cls, metadata, timestamp: int = None, offset: int = None, topic: str = None,
-              tenant: str = None, scenario_id: str = None) -> Optional["EventMetadata"]:
+              tenant: str = None, scenario_id: str = None) -> "EventMetadata":
         new_timestamp = timestamp if timestamp is not None else metadata.timestamp
         new_offset = offset if offset is not None else metadata.offset
         new_topic = topic if topic is not None else metadata.topic
         new_tenant = tenant if tenant is not None else metadata.tenant
+        if scenario_id is not None:
+            new_scenario = scenario_id if scenario_id else None
+        else:
+            new_scenario = metadata.scenario_id
 
-        return cls(new_timestamp, new_offset, new_topic, new_tenant)
+        return cls(new_timestamp, new_offset, new_topic, new_tenant, new_scenario)
 
 
-T = TypeVar("T")
+PAYLOAD = TypeVar("PAYLOAD")
+
+
 @dataclass
-class Event(Generic[T]):
+class Event(Generic[PAYLOAD]):
     id: str
-    payload: T
+    payload: PAYLOAD
     metadata: EventMetadata = field(default_factory=EventMetadata)
 
     @classmethod
-    def for_payload(cls, payload: T, source: "Event" = None) -> Optional["Event"]:
+    def for_payload(cls, payload: PAYLOAD, source: "Event" = None) -> "Event":
         event = cls(str(uuid.uuid4()), payload)
 
         if source:
@@ -45,14 +52,23 @@ class Event(Generic[T]):
         return event
 
     @classmethod
-    def with_topic(cls, event: "Event", topic: str) -> Optional["Event"]:
+    def for_scenario_payload(cls, scenario_id: str, payload: PAYLOAD, source: "Event" = None) -> "Event":
+        event = cls(str(uuid.uuid4()), payload)
+
+        if source:
+            event = Event.with_source(event, source)
+
+        return Event.with_scenario(event, scenario_id)
+
+    @classmethod
+    def with_topic(cls, event: "Event", topic: str) -> "Event":
         if hasattr(event.metadata, 'topic') and event.metadata.topic == topic:
             return event
 
         return cls(event.id, event.payload, EventMetadata.with_(event.metadata, topic=topic))
 
     @classmethod
-    def with_tenant(cls, event: "Event", tenant: str) -> Optional["Event"]:
+    def with_tenant(cls, event: "Event", tenant: str) -> "Event":
         if (hasattr(event, 'tenant') and tenant == event.metadata.tenant):
             return event
 
@@ -61,12 +77,23 @@ class Event(Generic[T]):
         return cls(event.id, event.payload, metadata)
 
     @classmethod
-    def with_source(cls, event: "Event", source: "Event") -> Optional["Event"]:
-        if (hasattr(event, 'tenant') and hasattr(source, 'tenant')
-                and event.metadata.tenant == source.metadata.tenant):
+    def with_scenario(cls, event: "Event", scenario_id: str) -> "Event":
+        if (hasattr(event, 'scenario_id') and scenario_id == event.metadata.scenario_id):
             return event
 
-        metadata = EventMetadata.with_(event.metadata, tenant=source.metadata.tenant)
+        metadata = EventMetadata.with_(event.metadata, scenario_id=scenario_id)
+
+        return cls(event.id, event.payload, metadata)
+
+    @classmethod
+    def with_source(cls, event: "Event", source: "Event") -> "Event":
+        if (hasattr(event, 'tenant') and hasattr(source, 'tenant')
+                and event.metadata.tenant == source.metadata.tenant
+                and (hasattr(event, 'scenario_id') and hasattr(source, 'scenario_id')
+                and event.metadata.scenario_id == source.metadata.scenario_id)):
+            return event
+
+        metadata = EventMetadata.with_(event.metadata, tenant=source.metadata.tenant, scenario_id=source.metadata.scenario_id)
 
         return cls(event.id, event.payload, metadata)
 

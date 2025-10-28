@@ -9,8 +9,8 @@ from emissor.representation.scenario import Modality, AudioSignal, TextSignal, I
 
 from cltl.combot.infra.time_util import timestamp_now
 
-S = TypeVar('S', bound=Signal)
-M = TypeVar('M', bound=Mention)
+SIG = TypeVar('SIG', bound=Signal)
+MEN = TypeVar('MEN', bound=Mention)
 
 
 class ConversationalAgent(Enum):
@@ -59,18 +59,18 @@ class ScenarioStopped(ScenarioEvent):
 
 
 @dataclass
-class SignalEvent(Generic[S], EmissorEvent):
+class SignalEvent(Generic[SIG], EmissorEvent):
     modality: Modality
-    signal: S
+    signal: SIG
 
 
 @dataclass
-class SignalStarted(Generic[S], SignalEvent[S]):
+class SignalStarted(Generic[SIG], SignalEvent[SIG]):
     pass
 
 
 @dataclass
-class SignalStopped(Generic[S], SignalEvent[S]):
+class SignalStopped(Generic[SIG], SignalEvent[SIG]):
     pass
 
 
@@ -123,9 +123,9 @@ class AudioSignalStopped(SignalStopped[AudioSignal]):
 
 
 @dataclass
-class AnnotationEvent(Generic[M], EmissorEvent):
-    mentions: List[M]
+class AnnotationEvent(Generic[MEN], EmissorEvent):
+    mentions: List[MEN]
 
     @classmethod
-    def create(cls, mentions: List[M]):
+    def create(cls, mentions: List[MEN]):
         return cls(cls.__name__, mentions)

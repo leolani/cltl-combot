@@ -1,19 +1,20 @@
 import json
 import logging
+from threading import RLock, Thread
 from types import SimpleNamespace
+from typing import Callable, Dict, Tuple, Set
 
 from kombu import Connection, Exchange, Queue
 from kombu.mixins import ConsumerMixin
 from kombu.pools import producers, connections
-from threading import RLock, Thread
-from typing import Callable, Dict, Tuple, Set
 from kombu.serialization import register
 
-from cltl.combot.infra.di_container import singleton
 from cltl.combot.infra.config import ConfigurationManager, ConfigurationContainer
+from cltl.combot.infra.di_container import singleton
 from cltl.combot.infra.event.api import EventBusContainer, EventBus, Event
 
 logger = logging.getLogger(__name__)
+
 
 # Module-level variables for serialization functions (can be pickled)
 _current_serializer_func = None
@@ -22,14 +23,14 @@ _current_deserializer_func = None
 def _serialize_with_custom_func(obj):
     """Pickleable wrapper for custom serializer"""
     if _current_serializer_func:
-        return json.dumps(obj, default=_current_serializer_func)
+        return _current_serializer_func(obj)
     else:
         return json.dumps(obj, default=vars)
 
 def _deserialize_with_custom_func(data):
     """Pickleable wrapper for custom deserializer"""
     if _current_deserializer_func:
-        return json.loads(data, object_hook=_current_deserializer_func)
+        return _current_deserializer_func(data)
     else:
         return json.loads(data, object_hook=lambda d: SimpleNamespace(**d))
 

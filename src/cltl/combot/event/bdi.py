@@ -1,12 +1,11 @@
-import dataclasses
 from dataclasses import dataclass
-from typing import List, Any, Tuple
+from typing import List, Any, Optional
 
 
-@dataclasses.dataclass()
+@dataclass
 class Intention:
     label: str
-    args: Any
+    args: Optional[Any]
 
 
 @dataclass
