@@ -25,6 +25,9 @@ class SynchronousEventBus(EventBus):
     def publish(self, topic, event):
         start = timestamp_now()
 
+        if not event.metadata.tenant:
+            event = Event.with_tenant(event, "local")
+
         for handler in self.__get_handlers(topic):
             handler(Event.with_topic(event, topic))
 
