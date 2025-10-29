@@ -104,7 +104,7 @@ class KombuEventBus(EventBus):
         if self._tenant and not event.metadata.tenant:
             event = Event.with_tenant(event, self._tenant)
 
-        full_topic = f"{topic}.{self._tenant}" if self._tenant else topic
+        full_topic = f"{topic}.{event.metadata.tenant}" if event.metadata.tenant else topic
 
         self._producer_topics.add(full_topic)
 
