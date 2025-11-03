@@ -190,7 +190,7 @@ class _EventBusConsumer(ConsumerMixin, Thread):
 
         full_topic = f"{topic}.{tenant}" if tenant else topic
         routing = f"{topic}.{tenant}" if tenant else f"{topic}.#"
-        self.queue = Queue(full_topic, exchange, routing_key=routing)
+        self.queue = Queue(full_topic, exchange, routing_key=routing, auto_delete=True)
 
     def get_consumers(self, Consumer, channel):
         return [Consumer([self.queue], accept=[self.serializer], callbacks=[self.on_message])]
