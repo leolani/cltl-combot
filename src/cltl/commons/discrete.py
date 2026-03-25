@@ -118,6 +118,53 @@ class Sentiment(Enum):
         else:
             return Sentiment.UNDERSPECIFIED
 
+class Level(Enum):
+    UNDERSPECIFIED = -1
+    NOT = 0
+    ALMOST_NOT = 1
+    SOMEWHAT = 2
+    ALMOST_FULLY = 3
+    FULLY = 4
+
+    @staticmethod
+    def from_str(label):
+        try:
+            return Level[label.upper()]
+        except:
+            return Level.UNDERSPECIFIED
+
+    @staticmethod
+    def from_float(numeric):
+        if numeric ==-1:
+            return Level.UNDERSPECIFIED
+        elif numeric >= 0 and numeric <0.5:
+            return Level.NOT
+        elif numeric >= 0.5 and numeric <1.5:
+            return Level.ALMOST_NOT
+        elif numeric >= 1.5 and numeric <2.5:
+            return Level.SOMEWHAT
+        elif numeric >= 2.5 and numeric <3.5:
+            return Level.ALMOST_FULLY
+        elif numeric >= 3.5:
+            return Level.FULLY
+
+
+    @staticmethod
+    def as_enum(value):
+        # Convert to enum
+        if value is None:
+            return Level.UNDERSPECIFIED
+        elif isinstance(value, Level):
+            return value
+        elif isinstance(value, int) or isinstance(value, float):
+            return Level.from_float(value)
+        elif isinstance(value, str) and value.isnumeric():
+            return Level.from_float(float(value))
+        elif isinstance(value, str):
+            return Level.from_str(value)
+        else:
+            return Level.UNDERSPECIFIED
+
 
 class Emotion(Enum):
     UNDERSPECIFIED = 0
@@ -207,3 +254,5 @@ class UtteranceType(str, Enum):
     IMAGE_MENTION = auto()
     TEXT_ATTRIBUTION = auto()
     IMAGE_ATTRIBUTION = auto()
+    ACTION_MENTION = auto()    
+    ACTION_ATTRIBUTION = auto()
