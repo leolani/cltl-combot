@@ -195,13 +195,6 @@ class Emotion(Enum):
         # elif isinstance(value, str) and value.isnumeric():
         #     return Emotion.from_float(float(value))
         elif isinstance(value, str):
-            if value.startswith("EmotionType.GO"):
-                return GoEmotion[value.split(':')[-1].upper()]
-            if value.startswith("EmotionType.EKMAN"):
-                return Emotion[value.split(':')[-1].upper()]
-            elif value.startswith("EmotionType.SENTIMENT"):
-                return Sentiment[value.split(':')[-1].upper()]
-
             return Emotion.from_str(value)
         else:
             return Emotion.UNDERSPECIFIED
@@ -236,6 +229,28 @@ class GoEmotion(Enum):
     CURIOSITY = auto()
     CONFUSION = auto()
     NEUTRAL = auto()
+    UNDERSPECIFIED = -1
+
+    @staticmethod
+    def from_str(label):
+        try:
+            return GoEmotion[label.upper()]
+        except:
+            return GoEmotion.UNDERSPECIFIED
+
+    @staticmethod
+    def as_enum(value):
+        # Convert to enum
+        if value is None:
+            return GoEmotion.UNDERSPECIFIED
+        elif isinstance(value, GoEmotion):
+            return value
+        elif isinstance(value, str):
+            return GoEmotion.from_str(value)
+        else:
+            return GoEmotion.UNDERSPECIFIED
+        
+
 
 
 class Time(Enum):
