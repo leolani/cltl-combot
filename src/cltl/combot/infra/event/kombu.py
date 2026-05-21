@@ -190,7 +190,11 @@ class _EventBusConsumer(ConsumerMixin, Thread):
 
         full_topic = f"{topic}.{tenant}" if tenant else topic
         routing = f"{topic}.{tenant}" if tenant else f"{topic}.#"
-        self.queue = Queue(full_topic, exchange, routing_key=routing, auto_delete=True)
+        # Use an auto-generated unique queue name so each subscriber gets its own queue.
+        # Named queues (full_topic) are shared across containers → competing consumers,
+        # which breaks pub-sub. An empty name lets RabbitMQ assign a unique name per
+        # connection, and exclusive=True ties the queue lifetime to the connection.
+        self.queue = Queue("", exchange, routing_key=routing, exclusive=True, auto_delete=True)
 
     def get_consumers(self, Consumer, channel):
         return [Consumer([self.queue], accept=[self.serializer], callbacks=[self.on_message])]
