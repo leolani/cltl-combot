@@ -46,6 +46,7 @@ class Polarity(Enum):
     UNDERSPECIFIED = 0
     NEGATIVE = -1
     POSITIVE = 1
+    EXPECT = 2
 
     @staticmethod
     def from_str(label):
