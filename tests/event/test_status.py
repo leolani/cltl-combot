@@ -19,5 +19,13 @@ class StatusEventTest(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     StatusEvent("m", "s", **kwargs)
 
+    def test_a_persistent_status_cannot_expire_fill_or_end(self):
+        self.assertTrue(StatusEvent("m", "s", persistent=True).persistent)
+        self.assertFalse(StatusEvent("m", "s").persistent)
+        for kwargs in ({"ttl": 1}, {"progress": 0.5}, {"key": "k", "resolved": True}):
+            with self.subTest(**kwargs):
+                with self.assertRaises(ValueError):
+                    StatusEvent("m", "s", persistent=True, **kwargs)
+
     def test_a_resolve_needs_a_key(self):
         self.assertTrue(StatusEvent("m", "s", key="k", resolved=True).resolved)
