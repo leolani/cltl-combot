@@ -1,8 +1,9 @@
 import json
 import logging
+import ssl
 from threading import RLock, Thread
 from types import SimpleNamespace
-from typing import Callable, Dict, Tuple, Set
+from typing import Callable, Dict, Tuple, Set, Union
 
 from kombu import Connection, Exchange, Queue
 from kombu.mixins import ConsumerMixin
@@ -88,7 +89,7 @@ class KombuEventBus(EventBus):
         self._serializer = serializer
 
         self._topic_lock = RLock()
-        self.connection = Connection(server)
+        self.connection = Connection(server, ssl=_ssl_options(server, config))
         self.exchange = Exchange(exchange, type="topic")
 
         self._tenant = config.get('tenant') if 'tenant' in config else None
@@ -203,6 +204,26 @@ class _EventBusConsumer(ConsumerMixin, Thread):
         logger.debug("Received message: %s", body)
         self.callback(body)
         message.ack()
+
+
+def _ssl_options(server: str, config) -> Union[dict, bool]:
+    """TLS options for an ``amqps://`` server, ``False`` for plain ``amqp://``.
+
+    Without these kombu's ``amqps`` transport passes ``ssl=True``, so py-amqp
+    verifies the certificate chain but never the hostname. ``server_hostname``
+    set to ``None`` makes kombu fill it in from the URL's host, and py-amqp then
+    turns on ``check_hostname``. ``ssl_ca_certs`` is for a broker whose
+    certificate is not signed by a public CA; empty means the system store.
+    """
+    if not server or not server.startswith("amqps://"):
+        return False
+
+    options = {"server_hostname": None, "cert_reqs": ssl.CERT_REQUIRED}
+    ca_certs = config.get("ssl_ca_certs") if "ssl_ca_certs" in config else None
+    if ca_certs:
+        options["ca_certs"] = ca_certs
+
+    return options
 
 
 def _format_name(handler: Callable[[Event], None]) -> str:
