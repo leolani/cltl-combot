@@ -10,6 +10,6 @@ include util/make/makefile.component.mk
 include util/make/makefile.py.base.mk
 include util/make/makefile.git.mk
 
-.PHONY: docker-ghcr-build docker-ghcr-push
-docker-ghcr-build docker-ghcr-push:
+.PHONY: docker-ghcr-build docker-ghcr-push docker-ghcr-push-multiarch
+docker-ghcr-build docker-ghcr-push docker-ghcr-push-multiarch:
 	$(info No Docker image for $(project_name))
